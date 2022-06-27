@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp1", "WebApp1\WebApp1.csproj", "{51113082-0EFD-452E-9AEB-8C5137201B99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp2", "WebApp2\WebApp2.csproj", "{4D0ADB01-204C-4E13-A99C-7E900B233CE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{51113082-0EFD-452E-9AEB-8C5137201B99} = {51113082-0EFD-452E-9AEB-8C5137201B99}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

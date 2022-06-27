@@ -1,6 +1,6 @@
-﻿namespace WebApp2.Models
+﻿namespace WebApp1.Models
 {
-    public class User
+    public class BackUser
     {
 
         public int Id { get; set; }

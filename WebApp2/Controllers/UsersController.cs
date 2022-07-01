@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using System.Net;
 using WebApp2.Models;
 
@@ -45,7 +44,6 @@ namespace WebApp2.Controllers
         }
 
         
-
         [HttpPost("createuser")]
         public async Task<ActionResult<User>> CreateUser(User user)
         {
@@ -93,64 +91,64 @@ namespace WebApp2.Controllers
 
 
         [HttpPost("updateuser")]
-        public async Task<ActionResult<User>> UpdateUser(JObject data)
+        public async Task<ActionResult<User>> UpdateUser(User user)
         {
 
-            var user = data?["user"]?.ToObject<User>();
-            var fName = data?["fname"]?.ToString();
-            var lName = data?["lname"]?.ToString();
-            var email = data?["email"]?.ToString();
-            var phone = data?["phone"]?.ToString();
-            var byear = data["byear"].ToObject<int>();
-            var bmonth = data["bmonth"].ToObject<int>();
-            var bday = data["bday"].ToObject<int>();
+            var updateUser = Db.Users.FirstOrDefault(i => i.Id == user.Id);
 
-            if (user == null)
+            if (updateUser == null) 
                 return BadRequest();
 
-            try
-            {
+                try
+                {
+                if (!string.IsNullOrEmpty(user.FirstName))
+                    updateUser.FirstName = user.FirstName;
+                    await Db.SaveChangesAsync();
+                
+                if (!string.IsNullOrEmpty(user.LastName))
+                    user.LastName = user.LastName;
+                await Db.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(user.Email))
+                    updateUser.Email = user.Email;
+                await Db.SaveChangesAsync();
+
+                if(!string.IsNullOrEmpty(user.Phone))
+                    updateUser.Phone = user.Phone;
+                await Db.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(user.BirthDay))
+                    updateUser.BirthDay = user.BirthDay;
+                await Db.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(user.BirthMonth))    
+                    updateUser.BirthMonth = user.BirthMonth;
+                await Db.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(user.BirthYear))
+                    updateUser.BirthYear=user.BirthYear;
+                await Db.SaveChangesAsync();
+
+                if (user.Time != DateTime.MinValue)
+                    updateUser.Time = user.Time;
+                await Db.SaveChangesAsync();
+
+                return updateUser;
                
-            if (fName != null)
-                user.FirstName = fName;
-          await Db.SaveChangesAsync();    
-            
-            if (lName != null)
-                user.LastName = lName;
-          await Db.SaveChangesAsync();
+                   
+                }
 
-            if (email != null)
-                user.Email = email;
-          await Db.SaveChangesAsync();    
-            
-            if (phone != null)
-                user.Phone = phone;
-          await Db.SaveChangesAsync();
+                catch (WebException ex)
+                {
+                    return BadRequest(ex.Message);
 
-            if (byear != 0)
-                user.BirthYear = byear;
-          await Db.SaveChangesAsync();
-
-            if (bmonth != 0)
-                user.BirthMonth = bmonth;
-          await Db.SaveChangesAsync();
-
-            if (bday != 0)
-                user.BirthDay = bday;
-          await Db.SaveChangesAsync();
-
-                return user;
-            }
-
-            catch(WebException ex)
-            {
-                return BadRequest(ex.Message);
-
-            }
-         
+                }
 
         }
-    
+          
 
     }
+    
+
 }
+

@@ -51,6 +51,11 @@ app.MapGet("/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
 
 
         });
+app.MapGet("/", async context =>
+{
+    await context.Response.WriteAsync("App Running");
+
+});
 
 app.Run();
 

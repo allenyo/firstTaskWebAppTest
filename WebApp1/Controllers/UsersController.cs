@@ -111,7 +111,7 @@ namespace WebApp1.Controllers
         public  async Task<string> UpdateUser(User Data)
         {
             var converter = new ModelConverter();
-            var data = converter.UserToOut(Data);
+            var data = converter.UsertoOutUpdate(Data);
 
             if (data != null)
             {

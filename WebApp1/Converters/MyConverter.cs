@@ -105,6 +105,77 @@ namespace WebApp1.Converters
 
         }
 
+        public BackUser? UsertoOutUpdate(User user)
+        {
+
+            try
+            {
+               
+
+                try
+                {
+                    var birth = user.BirthDay.Split(new char[] { '/', ' ', '.' });
+
+                    if (birth.ElementAt(1).Contains('0'))
+                    {
+                        birth[1] = birth[1][1..];
+
+                    }
+
+                    if (birth.ElementAt(0).Contains('0'))
+                    {
+                        birth[0] = birth[0][1..];
+
+                    }
+
+
+                    var userToOut = new
+
+                        BackUser
+                    {
+                        Id = user.Id,
+                        FirstName = user.FullName.Split(" ").First(),
+                        LastName = user.FullName.Split(" ").Last(),
+                        Email = user.Email,
+                        Phone = user.Phone,
+                        BirthYear = birth.ElementAt(2),
+                        BirthMonth = birth.ElementAt(1),
+                        BirthDay = birth.ElementAt(0),
+                        Time = user.Time,
+
+                    };
+
+                    return userToOut;
+
+                }
+                catch
+                {
+
+                    var userToOut = new
+
+                   BackUser
+                    {
+                        Id = user.Id,
+                        FirstName = user.FullName.Split(" ").First(),
+                        LastName = user.FullName.Split(" ").Last(),
+                        Email = user.Email,
+                        Phone = user.Phone,
+                        Time = user.Time,
+
+                    };
+
+                    return userToOut;
+
+                }
+
+            }
+            catch
+            {
+                return null;
+
+            }
+
+        }
        
     }
 

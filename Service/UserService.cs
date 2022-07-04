@@ -58,36 +58,53 @@ namespace Service
             var updateUser = _dbContext.Users.First(i => i.Id == user.Id);
 
                 if (!string.IsNullOrEmpty(user.FirstName))
-                    updateUser.FirstName = user.FirstName;
+            {
+                updateUser.FirstName = user.FirstName;
                 await _dbContext.SaveChangesAsync();
 
+            }
+               
                 if (!string.IsNullOrEmpty(user.LastName))
-                    user.LastName = user.LastName;
+            {
+                updateUser.LastName = user.LastName;
                 await _dbContext.SaveChangesAsync();
+            }
+                    
 
                 if (!string.IsNullOrEmpty(user.Email))
-                    updateUser.Email = user.Email;
+            {
+                updateUser.Email = user.Email;
                 await _dbContext.SaveChangesAsync();
+            }
+                  
 
                 if (!string.IsNullOrEmpty(user.Phone))
-                    updateUser.Phone = user.Phone;
+            {
+                updateUser.Phone = user.Phone;
                 await _dbContext.SaveChangesAsync();
+            }
+            
 
                 if (!string.IsNullOrEmpty(user.BirthDay))
-                    updateUser.BirthDay = user.BirthDay;
+            {
+                updateUser.BirthDay = user.BirthDay;
                 await _dbContext.SaveChangesAsync();
+            }
+                
 
                 if (!string.IsNullOrEmpty(user.BirthMonth))
-                    updateUser.BirthMonth = user.BirthMonth;
+            {
+                updateUser.BirthMonth = user.BirthMonth;
                 await _dbContext.SaveChangesAsync();
+            }
+                 
 
                 if (!string.IsNullOrEmpty(user.BirthYear))
-                    updateUser.BirthYear = user.BirthYear;
+            {
+                updateUser.BirthYear = user.BirthYear;
                 await _dbContext.SaveChangesAsync();
-
-                if (user.Time != DateTime.MinValue)
-                    updateUser.Time = user.Time;
-                await _dbContext.SaveChangesAsync();
+            }
+              
 
                 return updateUser;
 

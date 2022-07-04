@@ -1,7 +1,10 @@
-
+using api1Domain.Interfaces;
+using api1Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 

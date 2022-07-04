@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApp1.Converters;
-using WebApp1.Models;
+﻿using api1Domain.Interfaces;
+using api1Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace WebApp1.Controllers
 {
@@ -9,123 +10,59 @@ namespace WebApp1.Controllers
 
     public class UsersController : Controller
     {
-        readonly HttpClient Client = new();
+        private readonly IUserService _userService;
 
-        public  HttpResponseMessage? response = new();
-
-        public string Status { get; set; } = string.Empty;
-
-        public string? Data { get; set; } = null;
-
-        public bool Success { get; set; }
-
-        async Task GetResponse(string url)
+        public UsersController(IUserService userService)
         {
-            response = await Client.GetAsync(url);
-
-            Data = await response.Content.ReadAsStringAsync();
-
-            Status = response.StatusCode.ToString();
-
-            Success = response.IsSuccessStatusCode;
-
-
+            _userService = userService;
         }
 
 
         [HttpGet("getusers")]
-        public  async Task<string> GetUser()
-        {
-            
-                await  GetResponse("https://localhost:7234/api/users/getusers");
-
-                
-            if (!Success || Data == null)
-                    return Status.ToString();
-
-                return Data.ToString();
-
-
-        
+        public async Task<string?> GetUser()
+        {    
+            await _userService.GetUser();
+            return _userService.Data;
         }
 
+
         [HttpGet("getusers/{name}")]
-        public  async Task<string> GetUser(string name)
+        public  async Task<string?> GetUser(string name)
         {
-                   
-                await GetResponse($"https://localhost:7234/api/users/getusers/{name}");
-
-                if (!Success || Data == null)
-                    return Status.ToString();
-
-                return Data.ToString();       
-
+            await _userService.GetUser(name);
+            return _userService.Data;
         }
 
         [HttpGet("getusers/id{id}")]
-        public  async Task<string> GetUser(int id)
+        public  async Task<string?> GetUser(int id)
         {
-           
-                await GetResponse($"https://localhost:7234/api/users/getusers/id{id}");
-
-                if (!Success || Data == null)
-                    return Status.ToString();
-
-                return Data.ToString();
+            await _userService.GetUser(id);
+            return _userService.Data;
 
         }
 
         [HttpPost("createuser")]
         public  async Task<string> CreateUser(User user)
         {
-
-            var converter = new ModelConverter();
-            var User = converter.UserToOut(user);
-
-            if (User != null)
-            {
-
-                response = await Client.PostAsJsonAsync("https://localhost:7234/api/users/createuser/", User);
-
-
-                return response.ToString();
-
-
-            }
-            return string.Empty;
+           await _userService.CreateUser(user);
+            return _userService.Status;
         }
 
         [HttpPut("deleteuser")]
         public  async Task<string> DeleteUser(User user)
         {
            
-
-                response = await Client.PutAsJsonAsync("https://localhost:7234/api/users/deleteuser/", user);
-
-                return response.ToString();
+            await _userService.DeleteUser(user);
+            return _userService.Status;
 
 
         }
 
         [HttpPost("updateuser")]
-        public  async Task<string> UpdateUser(User Data)
+        public async Task<string?> UpdateUser(User Data)
         {
-            var converter = new ModelConverter();
-            var data = converter.UsertoOutUpdate(Data);
-
-            if (data != null)
-            {
-               
-
-
-                  response = await Client.PostAsJsonAsync("https://localhost:7234/api/users/updateuser/", data);
-
-                    return response.ToString();
-                
-            
-            }
-
-            return string.Empty;
+           await _userService.UpdateUser(Data);
+            return _userService.Status;
         }
 
     }

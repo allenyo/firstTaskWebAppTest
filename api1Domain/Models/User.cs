@@ -1,4 +1,4 @@
-﻿namespace WebApp1.Models
+﻿namespace api1Domain.Models
 {
     public class User
     {

@@ -1,4 +1,4 @@
-﻿namespace WebApp2.Models
+﻿namespace Domain.Models
 {
     public class User
     {
@@ -12,5 +12,6 @@
         public string BirthMonth { get; set; } = string.Empty;
         public string BirthDay { get; set; } = string.Empty;
         public DateTime Time { get; set; }
+
     }
 }

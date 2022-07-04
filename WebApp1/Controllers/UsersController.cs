@@ -6,6 +6,7 @@ namespace WebApp1.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
     public class UsersController : Controller
     {
         readonly HttpClient Client = new();
@@ -38,7 +39,8 @@ namespace WebApp1.Controllers
             
                 await  GetResponse("https://localhost:7234/api/users/getusers");
 
-                if (!Success || Data == null)
+                
+            if (!Success || Data == null)
                     return Status.ToString();
 
                 return Data.ToString();
@@ -96,11 +98,9 @@ namespace WebApp1.Controllers
         [HttpPut("deleteuser")]
         public  async Task<string> DeleteUser(User user)
         {
+           
 
-            var converter = new ModelConverter();
-            var User = converter.UserToOut(user);
-         
-                response = await Client.PutAsJsonAsync("https://localhost:7234/api/users/deleteuser/", User);
+                response = await Client.PutAsJsonAsync("https://localhost:7234/api/users/deleteuser/", user);
 
                 return response.ToString();
 

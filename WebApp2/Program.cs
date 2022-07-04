@@ -1,4 +1,6 @@
-using WebApp2.Models;
+using Data;
+using Domain.Interfaces;
+using Service;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -13,7 +15,8 @@ string con = config.GetConnectionString("DefaultConnection");
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<UserContext>(options => options.UseSqlite(con));
+builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -51,6 +54,7 @@ app.MapGet("/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
 
 
         });
+
 app.MapGet("/", async context =>
 {
     await context.Response.WriteAsync("App Running");

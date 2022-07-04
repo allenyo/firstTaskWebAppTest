@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace WebApp2.Models
+namespace Data
 {
-    public class UserContext : DbContext
+    public sealed class RepositoryDBContext : DbContext 
     {
-
         public DbSet<User> Users { get; set; } = null!;
 
-        public UserContext(DbContextOptions<UserContext> options) : base(options)
+        public RepositoryDBContext (DbContextOptions<RepositoryDBContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
@@ -21,5 +21,7 @@ namespace WebApp2.Models
                     new User { Id = 4, FirstName = "Karen", LastName = "Barkhudaryan", Email = "abushka@mail.ru", Phone = "+7895471236", BirthYear = "2005", BirthMonth = "5", BirthDay = "18", Time = DateTime.UtcNow }
             );
         }
+
+
     }
 }

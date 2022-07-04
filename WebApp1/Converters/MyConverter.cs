@@ -10,7 +10,7 @@ namespace WebApp1.Converters
         {
             try
             {
-                var birth = user.BirthDay.Split(new char[] { '/', ' ' });
+                var birth = user.BirthDay.Split(new char[] { '/', ' ', '.' });
 
                 var userToOut = new
 

@@ -108,8 +108,11 @@ namespace WebApp1.Controllers
         }
 
         [HttpPost("updateuser")]
-        public  async Task<string> UpdateUser(BackUser data)
+        public  async Task<string> UpdateUser(User Data)
         {
+            var converter = new ModelConverter();
+            var data = converter.UserToOut(Data);
+
             if (data != null)
             {
                

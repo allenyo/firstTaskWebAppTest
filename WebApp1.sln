@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi1", "WebApp1\WebApi1.csproj", "{51113082-0EFD-452E-9AEB-8C5137201B99}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi2", "WebApp2\WebApi2.csproj", "{4D0ADB01-204C-4E13-A99C-7E900B233CE9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{51113082-0EFD-452E-9AEB-8C5137201B99} = {51113082-0EFD-452E-9AEB-8C5137201B99}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{09EB59CB-52E8-424A-BAF8-66974513456E}"
 EndProject
@@ -28,9 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0D45AE16-2EE7-4D1E-A8B2-DCBDEDECE976}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api1Domain", "api1Domain\api1Domain.csproj", "{8D4C19DC-A200-46CE-A5B4-41059241C3C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api1Domain", "api1Domain\api1Domain.csproj", "{8D4C19DC-A200-46CE-A5B4-41059241C3C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api1Service", "api1Service\api1Service.csproj", "{608ECA86-5D2A-4896-BAF7-BF5EE18035BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "api1Service", "api1Service\api1Service.csproj", "{608ECA86-5D2A-4896-BAF7-BF5EE18035BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -4,6 +4,7 @@ using Service;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
+
 var ConfBuilder = new ConfigurationBuilder();
 ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
 ConfBuilder.AddJsonFile("appsettings.json");
@@ -18,6 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
+
+
 
 var app = builder.Build();
 

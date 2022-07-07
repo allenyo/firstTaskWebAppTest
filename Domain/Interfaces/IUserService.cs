@@ -11,6 +11,7 @@ namespace Domain.Interfaces
         Task CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task DeleteUser(User user);
+   
      
 
     }

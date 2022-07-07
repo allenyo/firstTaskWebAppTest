@@ -17,16 +17,24 @@ namespace api1Service
         public bool Success { get; set; }
 
   
-        
-        async Task GetResponse(string url)
+        async Task Request(string url, HttpMethod method, object? data = null)
         {
-            _response = await _httpClient.GetAsync(url);
+            if (data == null && method == HttpMethod.Get)
+            {
+                _response = await _httpClient.GetAsync(url);
+                Data = await _response.Content.ReadAsStringAsync();
+            }
 
-            Data = await _response.Content.ReadAsStringAsync();
+            if (data !=null && method == HttpMethod.Post)
+                _response = await _httpClient.PostAsJsonAsync(url, data);
+
+            if (data!=null && method == HttpMethod.Put)
+                _response = await _httpClient.PutAsJsonAsync(url, data);
 
             Status = _response.StatusCode.ToString();
 
             Success = _response.IsSuccessStatusCode;
+
 
 
         }
@@ -34,45 +42,44 @@ namespace api1Service
        
         public async Task GetUser()
         {
-            await GetResponse("https://localhost:7234/api/users/getusers");
+            await Request("https://localhost:7234/api/users/getusers", HttpMethod.Get);
         }
 
         public async Task GetUser(string name)
         {
-            await GetResponse($"https://localhost:7234/api/users/getusers/{name}");
+            await Request($"https://localhost:7234/api/users/getusers/{name}", HttpMethod.Get);
         }
 
 
         public async Task GetUser(int id)
         {
-            await GetResponse($"https://localhost:7234/api/users/getusers/id{id}");
+            await Request($"https://localhost:7234/api/users/getusers/id{id}", HttpMethod.Get);
         }
 
         public async Task CreateUser(User user)
-        {
-            var converter = new ModelConverter();
-            var User = converter.UserToBack(user);
+        {         
+                var converter = new ModelConverter();
+                var User = converter.UserToBack(user);
+                await Request("https://localhost:7234/api/users/createuser/", HttpMethod.Post, User);
 
-               _response = await _httpClient.PostAsJsonAsync("https://localhost:7234/api/users/createuser/", User);              
-
-            
+         
         }
 
-        public async Task DeleteUser(User user)
+        public async Task DeleteUser(UserID user)
         {
-            _response = await _httpClient.PutAsJsonAsync("https://localhost:7234/api/users/deleteuser/", user);
+            await Request("https://localhost:7234/api/users/deleteuser/", HttpMethod.Put, user);
+
         }
 
 
         public async Task UpdateUser(User user)
         {
-            var converter = new ModelConverter();
-            var data = converter.UserToBackUpdate(user);
-
-             _response = await _httpClient.PostAsJsonAsync("https://localhost:7234/api/users/updateuser/", data);
-
-          
-
+                var converter = new ModelConverter();
+                var User = converter.UserToBackUpdate(user);
+                await Request("https://localhost:7234/api/users/updateuser/", HttpMethod.Post, User);
+                        
         }
+
+     
     }
 }

@@ -20,6 +20,7 @@ namespace WebApp2.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUsers() 
         {
             var users = await _userService.GetUsers();
+
             return Ok(users);
         }
 
@@ -27,6 +28,9 @@ namespace WebApp2.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(string name) 
         {
             var users = await _userService.GetUsers(name);    
+            if (!users.Any())
+                return NotFound();
+
             return Ok(users);
         }
 
@@ -34,6 +38,8 @@ namespace WebApp2.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(int id) 
         {
             var user = await _userService.GetUsers(id);
+            if (user == null)
+                return NotFound();
 
             return Ok(user);
         }
@@ -42,27 +48,36 @@ namespace WebApp2.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<User>> CreateUser(User user) 
         {
-           await _userService.CreateUser(user);
+           
+            await _userService.CreateUser(user);
             return  CreatedAtAction(nameof(CreateUser), user);
 
         }
 
         [HttpPut("deleteuser")]
-        public async Task DeleteUser (User user)
+        public async Task<IActionResult> DeleteUser (User user)
         {
-             await _userService.DeleteUser(user);
-
+            if (_userService.UserExist(user))
+            {
+                await _userService.DeleteUser(user);
+                return Ok();
+            }
+                
+            return NotFound();
         }
 
 
         [HttpPost("updateuser")]
         public async Task<ActionResult<User>> UpdateUser(User user)
         {
+           
+
             await _userService.UpdateUser(user);
 
             return CreatedAtAction(nameof(UpdateUser), user);
         }
           
+     
 
     }
     

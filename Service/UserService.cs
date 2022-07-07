@@ -24,14 +24,14 @@ namespace Service
         public async Task<IEnumerable<User>> GetUsers(string name)
         {
             var users = _dbContext.Users.Where(i => i.FirstName.ToLower() == name.ToLower() || i.LastName.ToLower() == name.ToLower());
-   
+            
             return await users.ToListAsync();
         }
 
 
-        public async Task<User> GetUsers(int id)
+        public async Task<User?> GetUsers(int id)
         {
-            var user = await _dbContext.Users.FirstAsync(i => i.Id == id);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(i => i.Id == id);
 
             return user;
         }
@@ -46,8 +46,10 @@ namespace Service
 
         public async Task DeleteUser(User User)
         {
-            var user = _dbContext.Users.First(i => i.Id == User.Id);    
+            var user = _dbContext.Users.FirstOrDefault(i => i.Id == User.Id);    
+            if (user != null)
             _dbContext.Users.Remove(user);
+
             await _dbContext.SaveChangesAsync();
             
         }
@@ -105,10 +107,9 @@ namespace Service
                 await _dbContext.SaveChangesAsync();
             }
               
-
                 return updateUser;
-
-
         }
+
+ 
     }
 }

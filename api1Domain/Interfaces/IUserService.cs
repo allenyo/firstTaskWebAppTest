@@ -6,10 +6,10 @@ namespace api1Domain.Interfaces
     {
         Task GetUser();
         Task GetUser(string name);
-        Task GetUser(int name);
+        Task GetUser(int id);
         Task CreateUser(User user);
         Task UpdateUser(User user);
-        Task DeleteUser(User user);
+        Task DeleteUser(UserID user);
 
         public string Status { get; set; } 
 

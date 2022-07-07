@@ -44,15 +44,17 @@ namespace WebApp1.Controllers
         [HttpPost("createuser")]
         public  async Task<string> CreateUser(User user)
         {
+
            await _userService.CreateUser(user);
             return _userService.Status;
         }
 
         [HttpPut("deleteuser")]
-        public  async Task<string> DeleteUser(User user)
+        public  async Task<string> DeleteUser(int userid)
         {
-           
-            await _userService.DeleteUser(user);
+            var User = new UserID { Id = userid };
+
+            await _userService.DeleteUser(User);
             return _userService.Status;
 
 

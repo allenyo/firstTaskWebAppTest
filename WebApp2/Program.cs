@@ -3,7 +3,10 @@ using Domain.Interfaces;
 using Service;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-
+using FluentValidation;
+using Domain.Validation;
+using Domain.Models;
+using FluentValidation.AspNetCore;
 
 var ConfBuilder = new ConfigurationBuilder();
 ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
@@ -19,6 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
+builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 
 

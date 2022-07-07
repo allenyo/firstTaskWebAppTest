@@ -23,8 +23,12 @@ namespace Service
 
         public async Task<IEnumerable<User>> GetUsers(string name)
         {
-            var users = _dbContext.Users.Where(i => i.FirstName.ToLower() == name.ToLower() || i.LastName.ToLower() == name.ToLower());
+           
             
+            name = name[1..].ToLowerInvariant().Insert(0, char.ToUpper(name[0]).ToString());
+            var users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {name} OR 
+                FirstName LIKE {name.ToLowerInvariant()} OR Firstname LIKE {name.ToUpperInvariant()} ");
+
             return await users.ToListAsync();
         }
 

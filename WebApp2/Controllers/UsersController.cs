@@ -48,7 +48,9 @@ namespace WebApp2.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<User>> CreateUser(User user) 
         {
-           
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             await _userService.CreateUser(user);
             return  CreatedAtAction(nameof(CreateUser), user);
 
@@ -72,7 +74,6 @@ namespace WebApp2.Controllers
         public async Task<ActionResult<User>> UpdateUser(User user)
         {
            
-
             await _userService.UpdateUser(user);
 
             return CreatedAtAction(nameof(UpdateUser), user);

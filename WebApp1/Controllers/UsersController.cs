@@ -42,10 +42,19 @@ namespace WebApp1.Controllers
         }
 
         [HttpPost("createuser")]
-        public  async Task<string> CreateUser(User user)
+        public  async Task<ActionResult<string>> CreateUser(User user)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-           await _userService.CreateUser(user);
+
+            if (user.FullName == string.Empty || user.BirthDay == string.Empty
+                || user.Email == string.Empty || user.Phone == string.Empty)
+            {
+                return BadRequest();
+            }
+
+            await _userService.CreateUser(user);
             return _userService.Status;
         }
 

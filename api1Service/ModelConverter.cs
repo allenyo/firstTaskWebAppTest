@@ -34,17 +34,6 @@ namespace api1Service
             {
                 var birth = user.BirthDay.Split(new char[] { '/', ' ', '.' });
 
-                if (birth.ElementAt(1).Contains('0'))
-                {
-                    birth[1] = birth[1][1..];
-
-                }
-
-                if (birth.ElementAt(0).Contains('0'))
-                {
-                    birth[0] = birth[0][1..];
-
-                }
 
                 var userToOut = new
 

@@ -12,7 +12,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
-builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddControllers().AddFluentValidation(fv =>
+{
+    fv.RegisterValidatorsFromAssembly(typeof(UserValidator).Assembly);
+    fv.DisableDataAnnotationsValidation = true;
+    fv.AutomaticValidationEnabled = true;
+});
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 var app = builder.Build();

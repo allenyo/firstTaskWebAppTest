@@ -2,23 +2,25 @@ using Data;
 using Domain.Interfaces;
 using Service;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 using FluentValidation;
 using Domain.Models;
 using FluentValidation.AspNetCore;
 using Domain.Validation;
+using WebApi1.Logging.FIleLogger;
 
 var ConfBuilder = new ConfigurationBuilder();
 ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
 ConfBuilder.AddJsonFile("appsettings.json");
 var config = ConfBuilder.Build();
 
-
 string con = config.GetConnectionString("DefaultConnection");
 
-
-
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "Logging//FileLogger//log.txt"));
+
+
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddControllers().AddFluentValidation(fv =>
@@ -30,9 +32,18 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 
-
 var app = builder.Build();
 
+
+app.Use(async (context, next) =>
+{
+    app.Logger.LogInformation($"Request Path: {context.Request.Path} Time: {DateTime.Now.ToLongTimeString()}");
+
+    await next.Invoke();
+
+    app.Logger.LogInformation($"Response Status: {context.Response.StatusCode} Time: {DateTime.Now.ToLongTimeString()}");
+
+});
 
 app.UseDeveloperExceptionPage();
 app.UseRouting();
@@ -43,26 +54,7 @@ app.UseEndpoints(endpoints =>
    
 });
 
-app.MapGet("/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
-        {
-            var sb = new StringBuilder();
-            var endpoints = endpointSources.SelectMany(es => es.Endpoints);
-            foreach (var endpoint in endpoints)
-            {
-                sb.AppendLine(endpoint.DisplayName);
 
-           
-                if (endpoint is RouteEndpoint routeEndpoint)
-                {
-                    sb.AppendLine(routeEndpoint.RoutePattern.RawText);
-                }
-
-           
-            }
-            return sb.ToString();
-
-
-        });
 
 app.MapGet("/", async context =>
 {

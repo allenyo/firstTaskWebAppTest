@@ -34,9 +34,6 @@ builder.Services.AddScoped<IValidator<User>, UserValidator>();
 var app = builder.Build();
 
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
 app.UseDeveloperExceptionPage();
 app.UseRouting();
 

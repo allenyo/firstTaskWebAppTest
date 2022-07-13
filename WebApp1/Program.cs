@@ -23,12 +23,7 @@ builder.Services.AddScoped<IValidator<User>, UserValidator>();
 var app = builder.Build();
 
 
-
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
 app.UseDeveloperExceptionPage();
-app.UseRouting();
 app.UseSwagger();
 
 
@@ -37,6 +32,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "yo api");
     c.RoutePrefix = string.Empty;
 });
+
+app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {

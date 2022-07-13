@@ -45,7 +45,14 @@ app.Use(async (context, next) =>
 
 });
 
-app.UseDeveloperExceptionPage();
+app.UseStatusCodePages(async statusCodeContext =>
+{
+    var response = statusCodeContext.HttpContext.Response;
+    var path = statusCodeContext.HttpContext.Request.Path;
+
+    await response.WriteAsync($"Error - {path}. Status Code - {response.StatusCode}");
+
+});
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>

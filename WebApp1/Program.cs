@@ -22,8 +22,15 @@ builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 var app = builder.Build();
 
+app.UseStatusCodePages(async statusCodeContext =>
+{
+    var response = statusCodeContext.HttpContext.Response;
+    var path = statusCodeContext.HttpContext.Request.Path;
 
-app.UseDeveloperExceptionPage();
+   await response.WriteAsync($"Error - {path}. Status Code - {response.StatusCode}");
+
+
+});
 app.UseSwagger();
 
 

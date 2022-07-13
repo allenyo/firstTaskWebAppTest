@@ -16,3 +16,32 @@ SELECT "Id"
 FROM "Users"
 WHERE changes() = 1 AND "rowid" = last_insert_rowid();
 Response Status: 201 Time: 2:20:34 PM
+Now listening on: https://localhost:7234
+Now listening on: http://localhost:5234
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\cdigital\Documents\yoRepo\allenyo\firstTaskWebAppTest\WebApp2\
+Request Path: / Time: 3:12:52 PM
+Response Status: 200 Time: 3:12:52 PM
+Request Path: /lk Time: 3:13:02 PM
+Response Status: 404 Time: 3:13:02 PM
+Request Path: /;;pkk Time: 3:13:09 PM
+Response Status: 404 Time: 3:13:09 PM
+Now listening on: https://localhost:7234
+Now listening on: http://localhost:5234
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\cdigital\Documents\yoRepo\allenyo\firstTaskWebAppTest\WebApp2\
+Request Path: / Time: 3:14:28 PM
+Response Status: 200 Time: 3:14:28 PM
+Request Path: /ads Time: 3:14:33 PM
+Response Status: 404 Time: 3:14:33 PM
+Request Path: /adedf Time: 3:14:42 PM
+Response Status: 404 Time: 3:14:42 PM
+Now listening on: https://localhost:7234
+Now listening on: http://localhost:5234
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\cdigital\Documents\yoRepo\allenyo\firstTaskWebAppTest\WebApp2\
+Request Path: / Time: 4:11:21 PM
+Response Status: 200 Time: 4:11:21 PM

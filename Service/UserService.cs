@@ -27,7 +27,8 @@ namespace Service
             
             name = name[1..].ToLowerInvariant().Insert(0, char.ToUpper(name[0]).ToString());
             var users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {name} OR 
-                FirstName LIKE {name.ToLowerInvariant()} OR Firstname LIKE {name.ToUpperInvariant()} ");
+                FirstName LIKE {name.ToLowerInvariant()} OR Firstname LIKE {name.ToUpperInvariant()} OR LastName LIKE {name.ToLowerInvariant()}
+                OR LastName LIKE {name.ToUpperInvariant()}");
 
             return await users.ToListAsync();
         }

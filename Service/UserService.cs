@@ -26,9 +26,7 @@ namespace Service
            
             
             name = name[1..].ToLowerInvariant().Insert(0, char.ToUpper(name[0]).ToString());
-            var users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {name} OR 
-                FirstName LIKE {name.ToLowerInvariant()} OR Firstname LIKE {name.ToUpperInvariant()} OR LastName LIKE {name.ToLowerInvariant()}
-                OR LastName LIKE {name.ToUpperInvariant()}");
+            var users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {name} OR LastName LIKE {name}");
 
             return await users.ToListAsync();
         }
@@ -44,9 +42,16 @@ namespace Service
 
         public async Task CreateUser(User user)
         {
+            var exist = _dbContext.Users.Any(a =>a.FirstName == user.FirstName && a.LastName == user.LastName
+            && a.BirthDay == user.BirthDay && a.BirthMonth == user.BirthMonth && a.BirthYear == user.BirthYear
+            );
+
+            if (!exist)
+            {
                 _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
-       
+            }
+                 
         }
 
         public async Task DeleteUser(User User)
@@ -60,58 +65,63 @@ namespace Service
         }
 
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<User?> UpdateUser(User user)
         {
-            var updateUser = _dbContext.Users.First(i => i.Id == user.Id);
+            var updateUser = _dbContext.Users.FirstOrDefault(i => i.Id == user.Id);
 
+                if(updateUser != null)
+            {
                 if (!string.IsNullOrEmpty(user.FirstName))
-            {
-                updateUser.FirstName = user.FirstName;
-                await _dbContext.SaveChangesAsync();
+                {
+                    updateUser.FirstName = user.FirstName;
+                    await _dbContext.SaveChangesAsync();
 
-            }
-               
+                }
+
                 if (!string.IsNullOrEmpty(user.LastName))
-            {
-                updateUser.LastName = user.LastName;
-                await _dbContext.SaveChangesAsync();
-            }
-                    
+                {
+                    updateUser.LastName = user.LastName;
+                    await _dbContext.SaveChangesAsync();
+                }
+
 
                 if (!string.IsNullOrEmpty(user.Email))
-            {
-                updateUser.Email = user.Email;
-                await _dbContext.SaveChangesAsync();
-            }
-                  
+                {
+                    updateUser.Email = user.Email;
+                    await _dbContext.SaveChangesAsync();
+                }
+
 
                 if (!string.IsNullOrEmpty(user.Phone))
-            {
-                updateUser.Phone = user.Phone;
-                await _dbContext.SaveChangesAsync();
-            }
-            
+                {
+                    updateUser.Phone = user.Phone;
+                    await _dbContext.SaveChangesAsync();
+                }
+
 
                 if (!string.IsNullOrEmpty(user.BirthDay))
-            {
-                updateUser.BirthDay = user.BirthDay;
-                await _dbContext.SaveChangesAsync();
-            }
-                
+                {
+                    updateUser.BirthDay = user.BirthDay;
+                    await _dbContext.SaveChangesAsync();
+                }
+
 
                 if (!string.IsNullOrEmpty(user.BirthMonth))
-            {
-                updateUser.BirthMonth = user.BirthMonth;
-                await _dbContext.SaveChangesAsync();
-            }
-                 
+                {
+                    updateUser.BirthMonth = user.BirthMonth;
+                    await _dbContext.SaveChangesAsync();
+                }
+
 
                 if (!string.IsNullOrEmpty(user.BirthYear))
-            {
-                updateUser.BirthYear = user.BirthYear;
-                await _dbContext.SaveChangesAsync();
+                {
+                    updateUser.BirthYear = user.BirthYear;
+                    await _dbContext.SaveChangesAsync();
+                }
+
             }
-              
+
+                             
                 return updateUser;
         }
 

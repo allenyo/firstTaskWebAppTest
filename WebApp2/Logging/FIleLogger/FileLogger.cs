@@ -12,6 +12,14 @@
 
         public IDisposable BeginScope<TState>(TState state)
         {
+                var files = new DirectoryInfo(Directory.GetCurrentDirectory()).GetFiles("*.log");
+
+                foreach (var file in files)
+                {
+                    if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(30))
+                        File.Delete(file.FullName);
+                }           
+
             return this;
         }
 

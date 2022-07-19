@@ -7,7 +7,7 @@ using Domain.Models;
 using FluentValidation.AspNetCore;
 using Domain.Validation;
 using WebApi1.Logging.FIleLogger;
-
+using WebApi2.Middlewares;
 
 var ConfBuilder = new ConfigurationBuilder();
 ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
@@ -30,27 +30,14 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssembly(typeof(UserValidator).Assembly);
     fv.DisableDataAnnotationsValidation = true;
-    fv.AutomaticValidationEnabled = true;
+    fv.AutomaticValidationEnabled = false;
 });
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 
 var app = builder.Build();
 
-
-app.Use(async (context, next) =>
-{
-#pragma warning disable CA2254 
-    app.Logger.LogInformation($"Request Path: {context.Request.Path} Time: {DateTime.Now.ToLongTimeString()}");
-#pragma warning restore CA2254
-
-    await next.Invoke();
-
-    app.Logger.LogInformation($"Response Status: {context.Response.StatusCode} Time: {DateTime.Now.ToLongTimeString()}");
-
-    builder.Logging.Delete();
-   
-});
+app.UseLog(app);
 
 app.UseStatusCodePages(async statusCodeContext =>
 {

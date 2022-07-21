@@ -24,19 +24,25 @@ namespace api1Service
                 _response = await _httpClient.GetAsync(url);
                 Data = await _response.Content.ReadAsStringAsync();
             }
+            else
+            {
+                if (data != null && method == HttpMethod.Post)
+                {
+                    _response = await _httpClient.PostAsJsonAsync(url, data);
 
-            if (data !=null && method == HttpMethod.Post)
-                _response = await _httpClient.PostAsJsonAsync(url, data);
+                }
+                else
+                {
+                    _response = await _httpClient.PutAsJsonAsync(url, data);
 
-            if (data!=null && method == HttpMethod.Put)
-                _response = await _httpClient.PutAsJsonAsync(url, data);
+                }
 
             Status = _response.StatusCode.ToString();
 
             Success = _response.IsSuccessStatusCode;
 
 
-
+            }
         }
 
        

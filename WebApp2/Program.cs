@@ -7,7 +7,9 @@ using Domain.Models;
 using FluentValidation.AspNetCore;
 using Domain.Validation;
 using WebApi1.Logging.FIleLogger;
-using WebApi2.Middlewares;
+using WebApi2.Middleweres.Logging;
+
+
 
 var ConfBuilder = new ConfigurationBuilder();
 ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
@@ -20,7 +22,15 @@ string logPath = config.GetValue<string>("LogPath");
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), logPath ));
+
+builder.Host.ConfigureLogging(conf => 
+{ 
+    conf.ClearProviders();
+    conf.AddFile(Path.Combine(Directory.GetCurrentDirectory(), logPath));
+    conf.AddFilter("System", LogLevel.Warning);
+    conf.AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
+
+});
 
 
 
@@ -30,14 +40,16 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssembly(typeof(UserValidator).Assembly);
     fv.DisableDataAnnotationsValidation = true;
-    fv.AutomaticValidationEnabled = false;
+    fv.AutomaticValidationEnabled = true;
 });
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
+
 
 
 var app = builder.Build();
 
 app.UseLog(app);
+
 
 app.UseStatusCodePages(async statusCodeContext =>
 {
@@ -47,12 +59,13 @@ app.UseStatusCodePages(async statusCodeContext =>
     await response.WriteAsync($"Error - {path}. Status Code - {response.StatusCode}");
 
 });
+
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
+app.UseEndpoints( endpoints =>
 {
     endpoints.MapControllers();
-   
+  
 });
 
 
@@ -62,6 +75,7 @@ app.MapGet("/", async context =>
     await context.Response.WriteAsync("App Running");
 
 });
+
 
 app.Run();
 

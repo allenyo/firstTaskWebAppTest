@@ -1,4 +1,4 @@
-﻿namespace WebApi2.Middlewares
+﻿namespace WebApi2.Middleweres.Logging
 {
     public static class LogExtensions
     {

@@ -12,9 +12,9 @@ namespace api1Service
                 var nuser = new User
                 {
                     Id = user.Id,
-                    FullName = user.FirstName + " " + user.LastName,
-                    Email = user.Email,
-                    Phone = user.Phone,
+                    FullName = user.FirstName.Trim() + " " + user.LastName.Trim(),
+                    Email = user.Email.Trim(),
+                    Phone = user.Phone.Trim(),
                     Time = user.Time,
                     BirthDay = user.BirthMonth + "/" + user.BirthDay + "/" + user.BirthYear
                 };
@@ -40,10 +40,10 @@ namespace api1Service
                     BackUser
                 {
                     Id = user.Id,
-                    FirstName = user.FullName.Split(" ").First(),
-                    LastName = user.FullName.Split(" ").Last(),
-                    Email = user.Email,
-                    Phone = user.Phone,
+                    FirstName = user.FullName.Split(" ",StringSplitOptions.RemoveEmptyEntries).First(),
+                    LastName = user.FullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).Last(),
+                    Email = user.Email.Trim(),
+                    Phone = user.Phone.Trim(),
                     BirthYear = birth.ElementAt(2),
                     BirthMonth = birth.ElementAt(1),
                     BirthDay = birth.ElementAt(0),
@@ -90,10 +90,10 @@ namespace api1Service
                         BackUser
                     {
                         Id = user.Id,
-                        FirstName = user.FullName.Split(" ").First(),
-                        LastName = user.FullName.Split(" ").Last(),
-                        Email = user.Email,
-                        Phone = user.Phone,
+                        FirstName = user.FullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).First(),
+                        LastName = user.FullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).Last(),
+                        Email = user.Email.Trim(),
+                        Phone = user.Phone.Trim(),
                         BirthYear = birth.ElementAt(2),
                         BirthMonth = birth.ElementAt(1),
                         BirthDay = birth.ElementAt(0),
@@ -112,10 +112,10 @@ namespace api1Service
                    BackUser
                     {
                         Id = user.Id,
-                        FirstName = user.FullName.Split(" ").First(),
-                        LastName = user.FullName.Split(" ").Last(),
-                        Email = user.Email,
-                        Phone = user.Phone,
+                        FirstName = user.FullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).First(),
+                        LastName = user.FullName.Split(" ", StringSplitOptions.RemoveEmptyEntries).Last(),
+                        Email = user.Email.Trim(),
+                        Phone = user.Phone.Trim(),
                         Time = user.Time,
 
                     };

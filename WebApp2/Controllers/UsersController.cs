@@ -48,9 +48,29 @@ namespace WebApp2.Controllers
         [HttpPost("createuser")]
         public async Task<ActionResult<User>> CreateUser(User user) 
         {
+            if (user.Id != 0)
+            {
+                var User = _userService.GetUsers(user.Id).Result;
 
-            await _userService.CreateUser(user);
-            return  CreatedAtAction(nameof(CreateUser), user);
+                if (User == null)
+                {
+                    await _userService.CreateUser(user);
+                    return CreatedAtAction(nameof(CreateUser), user);
+                } else { return BadRequest(); }
+
+            }
+            else
+            {
+                 var res = await _userService.CreateUser(user);
+
+                if (res == null)
+                    return BadRequest();
+
+                return CreatedAtAction(nameof(CreateUser), user);
+            }
+  
+              
+             
 
         }
 
@@ -72,7 +92,9 @@ namespace WebApp2.Controllers
         public async Task<ActionResult<User>> UpdateUser(User user)
         {
             var check = await _userService.UpdateUser(user);
-               
+
+            if (check == null)
+                return NotFound();
 
             return Ok(check);
         }

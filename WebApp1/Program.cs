@@ -20,6 +20,17 @@ builder.Services.AddControllers().AddFluentValidation(fv =>
 });
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
+builder.Host.ConfigureLogging(conf =>
+{
+    conf.AddFilter("System", LogLevel.Warning);
+    conf.AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
+    conf.AddFilter("Microsoft", LogLevel.Information);
+
+
+
+
+});
+
 var app = builder.Build();
 
 app.UseStatusCodePages(async statusCodeContext =>

@@ -22,9 +22,7 @@ namespace Service
         }
 
         public async Task<IEnumerable<User>> GetUsers(string name)
-        {
-           
-            
+        {          
             name = name[1..].ToLowerInvariant().Insert(0, char.ToUpper(name[0]).ToString());
             var users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {name} OR LastName LIKE {name}");
 
@@ -40,18 +38,22 @@ namespace Service
         }
 
 
-        public async Task CreateUser(User user)
+        public async Task<User?> CreateUser(User user)
         {
-            var exist = _dbContext.Users.Any(a =>a.FirstName == user.FirstName && a.LastName == user.LastName
-            && a.BirthDay == user.BirthDay && a.BirthMonth == user.BirthMonth && a.BirthYear == user.BirthYear
-            );
+            var Users = _dbContext.Users.FromSqlInterpolated(@$"SELECT * FROM Users WHERE FirstName LIKE {user.FirstName} AND
+                           LastName LIKE {user.LastName} AND Email LIKE {user.Email} AND Phone LIKE {user.Phone} AND BirthDay LIKE {user.BirthDay} AND
+                           BirthMonth LIKE {user.BirthMonth} AND BirthYear LIKE {user.BirthYear}
 
-            if (!exist)
-            {
-                _dbContext.Users.Add(user);
-                await _dbContext.SaveChangesAsync();
-            }
-                 
+            ").ToListAsync().Result;
+
+            if (Users.Count<1)
+                {
+                    _dbContext.Users.Add(user);
+                    await _dbContext.SaveChangesAsync();
+                    return user;
+                }
+                return null;
+  
         }
 
         public async Task DeleteUser(User User)

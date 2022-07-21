@@ -24,10 +24,7 @@ builder.Host.ConfigureLogging(conf =>
 {
     conf.AddFilter("System", LogLevel.Warning);
     conf.AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
-    conf.AddFilter("Microsoft", LogLevel.Information);
-
-
-
+    conf.AddFilter("Microsoft", LogLevel.Warning);
 
 });
 
@@ -49,6 +46,9 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "yo api");
     c.RoutePrefix = string.Empty;
+    c.DisplayRequestDuration();
+    c.DisplayOperationId();
+    
 });
 
 app.UseRouting();

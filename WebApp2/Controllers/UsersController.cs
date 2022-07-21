@@ -77,7 +77,7 @@ namespace WebApp2.Controllers
         [HttpPut("deleteuser")]
         public async Task<IActionResult> DeleteUser (User user)
         {
-            var User = _userService.GetUsers(user.Id);
+            var User = _userService.GetUsers(user.Id).Result;
 
             if (User == null)
                 return NotFound();

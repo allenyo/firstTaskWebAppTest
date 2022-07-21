@@ -20,9 +20,9 @@ namespace WebApi2.Middleweres.Logging
             {
 
 #pragma warning disable CA2254 
-                app.Logger.LogInformation($"\nRequest Path: {context.Request.Path}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
+                app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
                     $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
-                    $"Request Headers: {GetHeaders(context.Request)}\n");
+                    $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
 #pragma warning restore CA2254 
 
             });
@@ -33,7 +33,7 @@ namespace WebApi2.Middleweres.Logging
 
 
 #pragma warning disable CA2254
-            app.Logger.LogInformation($"\nRespone Status Code: {context.Response.StatusCode}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
+            app.Logger.LogInformation($"Respone Status Code: {context.Response.StatusCode}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
                 $"Response Headers: {GetHeaders(context.Response)}\n");
 #pragma warning restore CA2254 
 

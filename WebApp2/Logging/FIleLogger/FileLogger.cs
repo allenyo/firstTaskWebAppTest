@@ -19,9 +19,9 @@
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            if (logLevel == LogLevel.Information)
+
             return true;
-            return false;
+     
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)

@@ -72,7 +72,7 @@ app.UseEndpoints( endpoints =>
 
 app.MapGet("/", async context =>
 {
-    await context.Response.WriteAsync("App Running");
+    await context.Response.WriteAsync("App Running....");
 
 });
 

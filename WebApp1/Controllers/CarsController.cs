@@ -49,12 +49,19 @@ namespace WebApi1.Controllers
             return Ok(res);
         }
 
-        [HttpDelete("delete")]
+        [HttpPost("delete")]
         public async Task<IActionResult> Delete(Car car)
         {
-            var res = await carService.delete(car);
+            var res = await carService.Delete(car);
             return Ok(res);
 
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(Car car)
+        {
+            var res = await carService.Update(car);
+            return Ok(res);
         }
     }
 }

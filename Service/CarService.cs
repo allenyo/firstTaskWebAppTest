@@ -17,13 +17,15 @@ namespace Service
         public async Task<bool> Add(Car car)
         {
            await _carsContext.Cars.AddAsync(car);  
+            await _carsContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> delete(Car car)
+        public async Task<bool> Delete(Car car)
         {
             _carsContext.Cars.Remove(car);
-            return false;
+            await _carsContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IList<Car>> GetAll()
@@ -46,5 +48,10 @@ namespace Service
             return await _carsContext.Cars.Where(m => m.Model == name).ToListAsync();
         }
 
+        public async Task<bool> Update(Car car)
+        {
+           _carsContext.Cars.Update(car);
+            return true;
+        }
     }
 }

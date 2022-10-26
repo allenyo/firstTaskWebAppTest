@@ -9,7 +9,8 @@ namespace Domain.Interfaces
         Task<IList<Car>> GetByModel(string name);
         Task<IList<Car>> GetbyMake(string makeName);
         Task<bool> Add(Car car);
-        Task<bool> delete(Car car);
+        Task<bool> Delete(Car car);
+        Task<bool> Update(Car car);
 
     }
 }

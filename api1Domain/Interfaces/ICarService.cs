@@ -9,7 +9,8 @@ namespace api1Domain.Interfaces
         Task<object?> GetByModel(string name);
         Task<object?> GetbyMake(string makeName);
         Task<bool> Add(Car car);
-        Task<bool> delete(Car car);
+        Task<bool> Delete(Car car);
+        Task<bool> Update(Car car);
 
     }
 }

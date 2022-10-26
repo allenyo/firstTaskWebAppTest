@@ -21,9 +21,9 @@ namespace api1Service
             return _requestManager.Success;
         }
 
-        public async Task<bool> delete(Car car)
+        public async Task<bool> Delete(Car car)
         {
-            await _requestManager.Request($"{baseurl}delete", HttpMethod.Delete, car);
+            await _requestManager.Request($"{baseurl}delete", HttpMethod.Post, car);
             return _requestManager.Success;
         }
 
@@ -51,5 +51,10 @@ namespace api1Service
             return _requestManager.Data;
         }
 
+        public async Task<bool> Update(Car car)
+        {
+            await _requestManager.Request($"{baseurl}update", HttpMethod.Put, car);
+            return _requestManager.Success;
+        }
     }
 }

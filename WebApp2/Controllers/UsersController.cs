@@ -24,7 +24,7 @@ namespace WebApp2.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getusers/{name}")]
+        [HttpGet("getbyname/{name}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(string name) 
         {
             var users = await _userService.GetUsers(name);    
@@ -34,7 +34,7 @@ namespace WebApp2.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getusers/id{id}")]
+        [HttpGet("getbyid/{id}")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(int id) 
         {
             var user = await _userService.GetUsers(id);

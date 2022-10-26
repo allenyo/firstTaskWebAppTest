@@ -19,30 +19,29 @@ namespace WebApp1.Controllers
 
 
         [HttpGet("getusers")]
-        public async Task<string?> GetUser()
-        {    
-            await _userService.GetUser();
-            return _userService.Data;
+        public async Task<IActionResult> GetUser()
+        {
+            return Ok(await _userService.GetUser());
         }
 
 
-        [HttpGet("getusers/{name}")]
-        public  async Task<string?> GetUser(string name)
+        [HttpGet("getbyname/{name}")]
+        public  async Task<IActionResult> GetUser(string name)
         {
-            await _userService.GetUser(name);
-            return _userService.Data;
+            
+            return Ok(await _userService.GetUser(name));
         }
 
-        [HttpGet("getusers/id{id}")]
-        public  async Task<string?> GetUser(int id)
+        [HttpGet("getbyid/{id}")]
+        public  async Task<IActionResult> GetUser(int id)
         {
-            await _userService.GetUser(id);
-            return _userService.Data;
+
+            return Ok(await _userService.GetUser(id));
 
         }
 
         [HttpPost("createuser")]
-        public  async Task<ActionResult<string>> CreateUser(User user)
+        public  async Task<IActionResult> CreateUser(User user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -54,26 +53,26 @@ namespace WebApp1.Controllers
                 return BadRequest();
             }
 
-            await _userService.CreateUser(user);
-            return _userService.Status;
+
+            return Ok( await _userService.CreateUser(user));
         }
 
         [HttpPut("deleteuser")]
-        public  async Task<string> DeleteUser(int userid)
+        public  async Task<IActionResult> DeleteUser(int userid)
         {
             var User = new UserID { Id = userid };
 
-            await _userService.DeleteUser(User);
-            return _userService.Status;
+
+            return Ok(await _userService.DeleteUser(User));
 
 
         }
 
         [HttpPost("updateuser")]
-        public async Task<string?> UpdateUser(User Data)
+        public async Task<IActionResult> UpdateUser(User Data)
         {
-           await _userService.UpdateUser(Data);
-            return _userService.Status;
+
+            return Ok(await _userService.UpdateUser(Data));
         }
 
     }

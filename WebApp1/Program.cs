@@ -9,15 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<RequestManager>();
+
+builder.Services.AddTransient<ICarService, CarService>(); // eex
+
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
-builder.Services.AddControllers().AddFluentValidation(fv =>
-{
-    fv.RegisterValidatorsFromAssembly(typeof(UserValidator).Assembly);
-    fv.DisableDataAnnotationsValidation = true;
-    fv.AutomaticValidationEnabled = true;
-});
+builder.Services.AddScoped<HttpResponseMessage>();
+builder.Services.AddHttpClient();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 builder.Host.ConfigureLogging(conf =>

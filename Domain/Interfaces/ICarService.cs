@@ -1,0 +1,15 @@
+﻿using Domain.Models;
+
+namespace Domain.Interfaces
+{
+    public interface ICarService
+    {
+        Task<IList<Car>> GetAll();
+        Task<Car?> GetById(int id);
+        Task<IList<Car>> GetByModel(string name);
+        Task<IList<Car>> GetbyMake(string makeName);
+        Task<bool> Add(Car car);
+        Task<bool> delete(Car car);
+
+    }
+}

@@ -35,7 +35,11 @@ builder.Host.ConfigureLogging(conf =>
 
 
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
+builder.Services.AddDbContext<carsContext>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddTransient<ICarService, CarService>();  // experiment
+
 builder.Services.AddControllers().AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssembly(typeof(UserValidator).Assembly);

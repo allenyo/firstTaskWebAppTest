@@ -4,18 +4,12 @@ namespace api1Domain.Interfaces
 {
     public interface IUserService
     {
-        Task GetUser();
-        Task GetUser(string name);
-        Task GetUser(int id);
-        Task CreateUser(User user);
-        Task UpdateUser(User user);
-        Task DeleteUser(UserID user);
-
-        public string Status { get; set; } 
-
-        public string? Data { get; set; } 
-
-        public bool Success { get; set; }
+        Task<object?> GetUser();
+        Task<object?> GetUser(string name);
+        Task<object?> GetUser(int id);
+        Task<bool> CreateUser(User user);
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(UserID user);
 
     }
 }

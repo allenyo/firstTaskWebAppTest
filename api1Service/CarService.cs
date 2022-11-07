@@ -29,25 +29,25 @@ namespace api1Service
 
         public async Task<object?> GetAll()
         {
-           await _requestManager.Request($"{baseurl}getcars", HttpMethod.Get); 
+           await _requestManager.Request($"{baseurl}getall", HttpMethod.Get); 
             return _requestManager.Data;
         }
 
         public async Task<object?> GetById(int id)
         {
-            await _requestManager.Request($"{baseurl}getbyid/{id}", HttpMethod.Get);
+            await _requestManager.Request($"{baseurl}getbyid/?id={id}", HttpMethod.Get);
             return _requestManager.Data;
         }
 
         public async Task<object?> GetbyMake(string makeName)
         {
-            await _requestManager.Request($"{baseurl}getbymake/{makeName}", HttpMethod.Get);
+            await _requestManager.Request($"{baseurl}getbymake/?make={makeName}", HttpMethod.Get);
             return _requestManager.Data;
         }
 
         public async Task<object?> GetByModel(string name)
         {
-            await _requestManager.Request($"{baseurl}getbymodel/{name}", HttpMethod.Get);
+            await _requestManager.Request($"{baseurl}getbymodel/?model={name}", HttpMethod.Get);
             return _requestManager.Data;
         }
 

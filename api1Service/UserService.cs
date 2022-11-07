@@ -23,14 +23,14 @@ namespace api1Service
 
         public async Task<object?> GetUser(string name)
         {
-            await _requestManager.Request($"{baseurl}getbyname/{name}", HttpMethod.Get);
+            await _requestManager.Request($"{baseurl}getuserbyname/?name={name}", HttpMethod.Get);
             return _requestManager.Data;
         }
 
 
         public async Task<object?> GetUser(int id)
         {
-            await _requestManager.Request($"{baseurl}getbyid/{id}", HttpMethod.Get);
+            await _requestManager.Request($"{baseurl}getuserbyid/?id={id}", HttpMethod.Get);
             return _requestManager.Data;
         }
 
@@ -60,6 +60,12 @@ namespace api1Service
              await _requestManager.Request($"{baseurl}updateuser", HttpMethod.Post, User);
              return _requestManager.Success;
 
+        }
+
+        public async Task<object?> GetAccounts(int userId)
+        {
+            await _requestManager.Request($"{baseurl}getaccounts?userid={userId}",HttpMethod.Get);
+            return _requestManager?.Data;
         }
 
      

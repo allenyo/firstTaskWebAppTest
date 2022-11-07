@@ -6,17 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApp2.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IAccountService accountService)
         {
-           _userService = userService;
+            _userService = userService;
+            _accountService = accountService;
         }
 
-        [HttpGet("getusers")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers() 
         {
             var users = await _userService.GetUsers();
@@ -24,8 +26,8 @@ namespace WebApp2.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getbyname/{name}")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers(string name) 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserByName(string name) 
         {
             var users = await _userService.GetUsers(name);    
             if (!users.Any())
@@ -34,8 +36,8 @@ namespace WebApp2.Controllers
             return Ok(users);
         }
 
-        [HttpGet("getbyid/{id}")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers(int id) 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserById(int id) 
         {
             var user = await _userService.GetUsers(id);
             if (user == null)
@@ -43,9 +45,8 @@ namespace WebApp2.Controllers
 
             return Ok(user);
         }
-
         
-        [HttpPost("createuser")]
+        [HttpPost]
         public async Task<ActionResult<User>> CreateUser(User user) 
         {
             if (user.Id != 0)
@@ -67,28 +68,20 @@ namespace WebApp2.Controllers
                     return BadRequest();
 
                 return CreatedAtAction(nameof(CreateUser), user);
-            }
-  
-              
-             
+            }            
 
         }
 
-        [HttpPut("deleteuser")]
+        [HttpPut]
         public async Task<IActionResult> DeleteUser (User user)
-        {
-            var User = _userService.GetUsers(user.Id).Result;
-
-            if (User == null)
-                return NotFound();
-
+        {     
                 await _userService.DeleteUser(user);
                return Accepted();
             
         }
 
 
-        [HttpPost("updateuser")]
+        [HttpPost]
         public async Task<ActionResult<User>> UpdateUser(User user)
         {
             var check = await _userService.UpdateUser(user);
@@ -98,11 +91,14 @@ namespace WebApp2.Controllers
 
             return Ok(check);
         }
-          
-     
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetAccounts(int userId)
+        {
+            return Ok(await _accountService.GetAccounts(userId));
+        }
     }
     
-
 }
 

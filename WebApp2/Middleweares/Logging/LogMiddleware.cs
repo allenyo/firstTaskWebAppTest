@@ -15,27 +15,14 @@ namespace WebApi2.Middleweres.Logging
 
         public async Task InvokeAsync(HttpContext context)
         {
-
-            Thread thread1 = new(() =>
-            {
-
-#pragma warning disable CA2254 
-                app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
-                    $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
-                    $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
-#pragma warning restore CA2254 
-
-            });
-
-            thread1.Start();
+            app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
+                $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
+                $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
 
             await next(context);
 
-
-#pragma warning disable CA2254
             app.Logger.LogInformation($"Respone Status Code: {context.Response.StatusCode}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
                 $"Response Headers: {GetHeaders(context.Response)}\n");
-#pragma warning restore CA2254 
 
         }
 

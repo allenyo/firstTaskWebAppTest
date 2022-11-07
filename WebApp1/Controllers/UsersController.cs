@@ -2,12 +2,10 @@
 using api1Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace WebApp1.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-
+    [Route("api/[controller]/[action]")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
@@ -18,29 +16,29 @@ namespace WebApp1.Controllers
         }
 
 
-        [HttpGet("getusers")]
-        public async Task<IActionResult> GetUser()
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
             return Ok(await _userService.GetUser());
         }
 
 
-        [HttpGet("getbyname/{name}")]
-        public  async Task<IActionResult> GetUser(string name)
+        [HttpGet]
+        public  async Task<IActionResult> GetUserByName(string name)
         {
             
             return Ok(await _userService.GetUser(name));
         }
 
-        [HttpGet("getbyid/{id}")]
-        public  async Task<IActionResult> GetUser(int id)
+        [HttpGet]
+        public  async Task<IActionResult> GetUserById(int id)
         {
 
             return Ok(await _userService.GetUser(id));
 
         }
 
-        [HttpPost("createuser")]
+        [HttpPost]
         public  async Task<IActionResult> CreateUser(User user)
         {
             if (!ModelState.IsValid)
@@ -57,7 +55,7 @@ namespace WebApp1.Controllers
             return Ok( await _userService.CreateUser(user));
         }
 
-        [HttpPut("deleteuser")]
+        [HttpPut]
         public  async Task<IActionResult> DeleteUser(int userid)
         {
             var User = new UserID { Id = userid };
@@ -68,12 +66,17 @@ namespace WebApp1.Controllers
 
         }
 
-        [HttpPost("updateuser")]
+        [HttpPost]
         public async Task<IActionResult> UpdateUser(User Data)
         {
 
             return Ok(await _userService.UpdateUser(Data));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAccounts(int userId)
+        {
+            return Ok(await _userService.GetAccounts(userId));
+        }
     }
 }

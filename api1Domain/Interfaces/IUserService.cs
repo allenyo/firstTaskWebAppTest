@@ -9,7 +9,8 @@ namespace api1Domain.Interfaces
         Task<object?> GetUser(int id);
         Task<bool> CreateUser(User user);
         Task<bool> UpdateUser(User user);
-        Task<bool> DeleteUser(UserID user);
+        Task<bool> DeleteUser(UserID userId);
+        Task<object?> GetAccounts(int userId);
 
     }
 }

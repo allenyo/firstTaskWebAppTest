@@ -1,5 +1,4 @@
 using api1Domain.Interfaces;
-using api1Domain.Models;
 using api1Domain.Validation;
 using api1Service;
 using FluentValidation;
@@ -11,15 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<RequestManager>();
 
-builder.Services.AddTransient<ICarService, CarService>(); // eex
+builder.Services.AddScoped<ICarService, CarService>(); // eex
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+builder.Services.AddScoped<IAccountService, AccountService>(); 
 builder.Services.AddScoped<HttpResponseMessage>();
 builder.Services.AddHttpClient();
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<IValidator<User>, UserValidator>();
 
 builder.Host.ConfigureLogging(conf =>
 {

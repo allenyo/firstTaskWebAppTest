@@ -58,10 +58,9 @@ namespace Service
 
         public async Task DeleteUser(User User)
         {
-            var user = _dbContext.Users.FirstOrDefault(i => i.Id == User.Id);    
+            var user = await _dbContext.Users.AsNoTracking().SingleOrDefaultAsync(i => i.Id == User.Id);    
             if (user != null)
             _dbContext.Users.Remove(user);
-
             await _dbContext.SaveChangesAsync();
             
         }
@@ -121,12 +120,11 @@ namespace Service
                     await _dbContext.SaveChangesAsync();
                 }
 
-            }
+                }
 
                              
                 return updateUser;
         }
-
- 
+      
     }
 }

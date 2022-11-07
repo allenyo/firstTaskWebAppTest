@@ -50,9 +50,18 @@ namespace Service
 
         public async Task<bool> Update(Car car)
         {
-           _carsContext.Cars.Update(car);
-            await _carsContext.SaveChangesAsync();
-            return true;
+            var machine =  await GetById((int)car.Id);
+            if (machine != null)
+            {
+                _carsContext.Cars.Update(car);
+                await _carsContext.SaveChangesAsync();
+                return true;
+            } else
+            {
+                return false;
+            }
+      
+           
         }
     }
 }

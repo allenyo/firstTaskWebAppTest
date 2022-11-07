@@ -2,13 +2,9 @@ using Data;
 using Domain.Interfaces;
 using Service;
 using Microsoft.EntityFrameworkCore;
-using FluentValidation;
-using Domain.Models;
 using FluentValidation.AspNetCore;
-using Domain.Validation;
 using WebApi1.Logging.FIleLogger;
 using WebApi2.Middleweres.Logging;
-
 
 
 var ConfBuilder = new ConfigurationBuilder();
@@ -37,11 +33,14 @@ builder.Host.ConfigureLogging(conf =>
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
 builder.Services.AddDbContext<carsContext>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IPayService, PayService>();
+builder.Services.AddHttpClient("yoclient");
 
-builder.Services.AddTransient<ICarService, CarService>();  // experiment
+builder.Services.AddScoped<ICarService, CarService>();  // experiment
 
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<IValidator<User>, UserValidator>();
+builder.Services.AddControllers();
 
 
 var app = builder.Build();
@@ -60,12 +59,12 @@ app.UseStatusCodePages(async statusCodeContext =>
 
 app.UseRouting();
 
+
 app.UseEndpoints( endpoints =>
 {
     endpoints.MapControllers();
   
 });
-
 
 
 app.MapGet("/", async context =>

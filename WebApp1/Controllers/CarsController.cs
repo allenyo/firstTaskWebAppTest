@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi1.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class CarsController : Controller
     {
         private readonly ICarService carService;
@@ -16,40 +16,40 @@ namespace WebApi1.Controllers
 
         }
 
-        [HttpGet("getcars")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await carService.GetAll());
         }
 
-        [HttpGet("getbymodel/{model}")]
+        [HttpGet]
         public async Task<IActionResult> GetByModel(string model)
         {
             return Ok(await carService.GetByModel(model));
         }
 
-        [HttpGet("getbyid/{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
             var car = await carService.GetById(id);
             return Ok(car);
         }
 
-        [HttpGet("getbymake/{make}")]
+        [HttpGet]
         public async Task<IActionResult> GetByMake(string make)
         {
             var cars = await carService.GetbyMake(make);
             return Ok(cars);
         }
 
-        [HttpPost("addcar")]
+        [HttpPost]
         public async Task<IActionResult> Add(Car car)
         {
             var res = await carService.Add(car);
             return Ok(res);
         }
 
-        [HttpPost("delete")]
+        [HttpPost]
         public async Task<IActionResult> Delete(Car car)
         {
             var res = await carService.Delete(car);
@@ -57,7 +57,7 @@ namespace WebApi1.Controllers
 
         }
 
-        [HttpPut("update")]
+        [HttpPut]
         public async Task<IActionResult> Update(Car car)
         {
             var res = await carService.Update(car);

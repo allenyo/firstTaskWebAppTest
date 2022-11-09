@@ -15,14 +15,13 @@ namespace WebApi2.Middleweres.Logging
 
         public async Task InvokeAsync(HttpContext context)
         {
-            app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
-                $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
-                $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
+          var thread1 = new Thread(new ParameterizedThreadStart(LogReq));        
 
+            thread1.Start(context);  
+            
             await next(context);
 
-            app.Logger.LogInformation($"Respone Status Code: {context.Response.StatusCode}, Date: {DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()}\n" +
-                $"Response Headers: {GetHeaders(context.Response)}\n");
+            LogRes(context);
 
         }
 
@@ -51,6 +50,26 @@ namespace WebApi2.Middleweres.Logging
 
             return stringBuilder.ToString();
         }
+
+        void LogReq(object? obj) 
+        {
+            if (obj is HttpContext context)
+                app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: " +
+                    $"{DateTime.Now.Date.ToShortDateString()} " +
+                    $"Time:{DateTime.Now.ToLongTimeString()} {DateTime.Now.Millisecond}\n" +
+                    $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
+                    $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
+
+        }
+
+        void LogRes(object? obj) 
+        {
+            if (obj is HttpContext context)
+            app.Logger.LogInformation($"Respone Status Code: {context.Response.StatusCode}, Date: " +
+                $"{DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()} " +
+                $"{DateTime.Now.Millisecond}\n" +
+                $"Response Headers: {GetHeaders(context.Response)}\n");
+        } 
 
     }
 

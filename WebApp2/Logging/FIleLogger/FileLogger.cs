@@ -15,7 +15,7 @@
             return this;
         }
 
-        public void Dispose() { GC.SuppressFinalize(this); }
+        public void Dispose() { GC.SuppressFinalize(this);  }
 
         public bool IsEnabled(LogLevel logLevel)
         {

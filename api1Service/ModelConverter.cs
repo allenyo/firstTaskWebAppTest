@@ -35,9 +35,9 @@ namespace api1Service
                 var birth = user.BirthDay.Split(new char[] { '/', ' ', '.' });
 
 
-                var userToOut = new
-
-                    BackUser
+                var userToOut =
+                    
+                    new BackUser
                 {
                     Id = user.Id,
                     FirstName = user.FullName.Split(" ",StringSplitOptions.RemoveEmptyEntries).First(),

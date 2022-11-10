@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<RequestManager>();
+builder.Services.AddScoped<IPayService, PayService>();
+builder.Services.AddScoped<IExchangeService, ExchangeService>();
 
 builder.Services.AddScoped<ICarService, CarService>(); // eex
 

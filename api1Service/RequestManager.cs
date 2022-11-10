@@ -30,7 +30,7 @@ namespace api1Service
             if (data == null && method == HttpMethod.Get)
             {
                 _response = await _httpClient.GetAsync(url);
-                Data = await _response.Content.ReadAsStringAsync();
+              
             }
             else
             {
@@ -41,15 +41,22 @@ namespace api1Service
                 }
                 else
                 {
-                    _response = await _httpClient.PutAsJsonAsync(url, data);
+                    if (method == HttpMethod.Delete)
+                    {
+                        _response = await _httpClient.DeleteAsync(url);
+                    } else
+                    {
+                        _response = await _httpClient.PutAsJsonAsync(url, data);
+                    }                
 
-                }
-
-                Status = _response.StatusCode.ToString();
-
-                Success = _response.IsSuccessStatusCode;
-
+                }   
             }
+
+            Status = _response.StatusCode.ToString();
+
+            Success = _response.IsSuccessStatusCode;
+
+            Data = await _response.Content.ReadAsStringAsync();
         }
     }
 }

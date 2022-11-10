@@ -34,6 +34,23 @@ namespace Service
         public async Task<object?> GetAccounts(int userId)
         {
             return await _dbContext.Accounts.AsNoTracking().Where(i => i.UserId == userId).ToListAsync();
+        } 
+        
+        public async Task<Accounts?> GetAccount(string account)
+        {
+            return await _dbContext.Accounts.AsNoTracking().SingleOrDefaultAsync(i => i.Account == account);
+        }
+
+        public async Task<bool> ChangeBalance(string account, decimal balance)
+        {
+            var Account = await _dbContext.Accounts.SingleOrDefaultAsync(i => i.Account == account);
+            if (Account == null)
+                return false;
+            Account.Balance = balance;
+            _dbContext.Entry(Account).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }

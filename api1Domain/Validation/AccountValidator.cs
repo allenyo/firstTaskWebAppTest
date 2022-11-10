@@ -24,7 +24,7 @@ namespace api1Domain.Validation
                 }
 
             });
-            RuleFor(p => p.Currency).Length(3);
+            RuleFor(p => p.Currency).IsInEnum();
             RuleFor(p=>p.Type).Length(5,20);
         }
     }

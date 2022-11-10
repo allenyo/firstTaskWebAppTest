@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data
 {
@@ -8,7 +9,7 @@ namespace Data
         [Key]
         public int UserId { get; set; }
         public string Type { get; set; } = string.Empty;
-        public string Currency { get; set; } = string.Empty;
+        public Currencies Currency { get; set; }
         public decimal Balance { get; set; }    
 
     }

@@ -35,6 +35,7 @@ builder.Services.AddDbContext<carsContext>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPayService, PayService>();
+builder.Services.AddScoped<IExchangeService, ExchangeService>();
 builder.Services.AddHttpClient("yoclient");
 
 builder.Services.AddScoped<ICarService, CarService>();  // experiment

@@ -47,7 +47,6 @@ namespace Service
             if (Account == null)
                 return false;
             Account.Balance = balance;
-            _dbContext.Entry(Account).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
 
             return true;

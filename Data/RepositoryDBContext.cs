@@ -14,9 +14,28 @@ namespace Data
             
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {         
+        {
+            modelBuilder.Entity<Accounts>(entity =>
+            {
+                entity.ToTable("Accounts");
+
+                entity.HasIndex(e => e.Account, "account")
+                    .IsUnique();
+
+                entity.Property(e => e.UserId).HasColumnName("UserId");
+
+                entity.Property(e => e.Type).HasColumnName("Type");
+
+                entity.Property(e => e.Currency).HasColumnName("Currency");
+
+                entity.Property(e => e.Balance).HasColumnName("Balance").HasColumnType("decimal");
+
+                entity.HasKey(e => e.Account);
+
+
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 

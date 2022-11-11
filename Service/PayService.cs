@@ -31,14 +31,10 @@ namespace Service
             if (AccountFrom.Currency != AccountTo.Currency)
             {
                 var ExchangeRequest = new ExchangeRequestModel { Value = payTo.Value, CurrencyeOut = AccountTo.Currency, CurrencyIn = AccountFrom.Currency };
-
-                if (decimal.TryParse(await exchangeService.Exchange(ExchangeRequest), out decimal ValueTo))
-                {
-                    valueTo = AccountTo.Balance + ValueTo;
-                } else
-                {
-                    return false;
-                }
+                var ValueTo = await exchangeService.Exchange(ExchangeRequest);
+                
+                   valueTo = AccountTo.Balance + decimal.Parse(ValueTo.Split(" ")[0]);
+            
             }else
             {
                 valueTo = AccountTo.Balance + payTo.Value;

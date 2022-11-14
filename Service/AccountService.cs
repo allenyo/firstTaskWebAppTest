@@ -1,5 +1,6 @@
 ﻿using Data;
 using Domain.Interfaces;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Service
@@ -7,10 +8,16 @@ namespace Service
     public class AccountService : IAccountService
     {
         private readonly RepositoryDBContext _dbContext;
+        private readonly IUserService userService;
+        private readonly IExchangeService exchangeService;
 
-        public AccountService(RepositoryDBContext repositoryDBContext)
+        public event IAccountService.AccountHandler? Notification;
+
+        public AccountService(RepositoryDBContext repositoryDBContext, IUserService userService, IExchangeService exchangeService)
         {
             _dbContext = repositoryDBContext;
+            this.userService = userService;
+            this.exchangeService = exchangeService;
         }
 
         public async Task<object?> GetAll()
@@ -33,7 +40,7 @@ namespace Service
 
         public async Task<object?> GetAccounts(int userId)
         {
-            return await _dbContext.Accounts.AsNoTracking().Where(i => i.UserId == userId).ToListAsync();
+            return await _dbContext.Accounts.Where(i => i.UserId == userId).ToListAsync();
         } 
         
         public async Task<Accounts?> GetAccount(string account)
@@ -43,13 +50,67 @@ namespace Service
 
         public async Task<bool> ChangeBalance(string account, decimal balance)
         {
+          
             var Account = await _dbContext.Accounts.SingleOrDefaultAsync(i => i.Account == account);
+
             if (Account == null)
                 return false;
+
+            Notification?.Invoke(this, new AccountEventArgs($"{Account.Account} Account balance - {Account.Balance}", Account.Balance - balance, Account.Account));
+
             Account.Balance = balance;
-            await _dbContext.SaveChangesAsync();
+          
+            await _dbContext.SaveChangesAsync();  
 
             return true;
         }
+
+
+        public async Task<bool> PayToAccount(string accountFrom, string accountTo, decimal value)
+        {
+            var AccountFrom = await _dbContext.Accounts.SingleOrDefaultAsync(i => i.Account == accountFrom);
+            var AccountTo = await _dbContext.Accounts.SingleOrDefaultAsync(i => i.Account == accountTo);
+
+            var userAccountFrom = await userService.GetUsers(AccountFrom!.UserId);
+            var userAccountTo = await userService.GetUsers(AccountTo!.UserId);
+
+            decimal valueTo;
+
+            if (AccountFrom.Currency != AccountTo.Currency)
+            {
+                var ExchangeRequest = new ExchangeRequestModel
+                {
+                    Value = value,
+                    CurrencyeOut = AccountTo.Currency,
+                    CurrencyIn = AccountFrom.Currency
+                };
+                var ValueTo = await exchangeService.Exchange(ExchangeRequest);
+
+                valueTo = decimal.Parse(ValueTo.Split(" ")[0]);
+
+            }
+            else
+            {
+                valueTo = value;
+            }
+
+            Notification?.Invoke(this, new AccountEventArgs($"Transaction from {AccountFrom.Account} " +
+              $"({userAccountFrom!.FirstName} {userAccountFrom.LastName})\n" +
+              $"Account balance - {AccountFrom.Balance} {AccountFrom.Currency}\n" +
+              $"Withdrawn from account: {value} {AccountFrom.Currency}\n Balance {AccountFrom.Balance - value} {AccountFrom.Currency}  ", value, AccountFrom.Account));
+
+            Notification?.Invoke(this, new AccountEventArgs($"Transaction to {AccountTo.Account} " +
+                $"({userAccountTo!.FirstName} {userAccountTo.LastName})\n" +
+                $"Account balance - {AccountTo.Balance} {AccountTo.Currency}\n" +
+                $"Credited to account {AccountTo.Account}: {valueTo} {AccountTo.Currency}\n" +
+                $"Balance {valueTo + AccountTo.Balance} {AccountTo.Currency}", valueTo, AccountTo.Account));
+
+            AccountFrom.Balance -= value;
+            AccountTo.Balance += valueTo;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

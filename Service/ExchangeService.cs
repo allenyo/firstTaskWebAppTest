@@ -77,7 +77,7 @@ namespace Service
                             case Currencies.AMD:
                                 {
                                     if (decimal.TryParse(ExchangeRatesValues.RUB.Split(" ")[0], out decimal v))
-                                        return (value * v).ToString() + " RUB";
+                                        return (value / v).ToString() + " RUB";
                                 } break;
                             case Currencies.USD:
                                 {

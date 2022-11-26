@@ -12,8 +12,6 @@ namespace Domain.Interfaces
         Task<bool> ChangeBalance(string account, decimal value);
         Task<bool> PayToAccount(string accountFrom, string accountTo, decimal value);
 
-        delegate void AccountHandler(IAccountService sender, AccountEventArgs e);
-        event AccountHandler? Notification;
-
+        event EventHandler<AccountEventArgs>? Notification;
     }
 }

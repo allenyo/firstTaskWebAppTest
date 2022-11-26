@@ -1,4 +1,5 @@
 ﻿using Data;
+using Domain;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace Service
         private readonly IUserService userService;
         private readonly IExchangeService exchangeService;
 
-        public event IAccountService.AccountHandler? Notification;
+        public event EventHandler<AccountEventArgs>? Notification;
 
         public AccountService(RepositoryDBContext repositoryDBContext, IUserService userService, IExchangeService exchangeService)
         {
@@ -94,22 +95,32 @@ namespace Service
                 valueTo = value;
             }
 
-            Notification?.Invoke(this, new AccountEventArgs($"Transaction from {AccountFrom.Account} " +
+            OnBalanceChanged(new AccountEventArgs($"Transaction from {AccountFrom.Account} " +
               $"({userAccountFrom!.FirstName} {userAccountFrom.LastName})\n" +
               $"Account balance - {AccountFrom.Balance} {AccountFrom.Currency}\n" +
-              $"Withdrawn from account: {value} {AccountFrom.Currency}\n Balance {AccountFrom.Balance - value} {AccountFrom.Currency}  ", value, AccountFrom.Account));
+              $"Withdrawn from account: {value} {AccountFrom.Currency}\n" +
+              $"Balance {AccountFrom.Balance - value} {AccountFrom.Currency}  ", value, AccountFrom.Account));
 
-            Notification?.Invoke(this, new AccountEventArgs($"Transaction to {AccountTo.Account} " +
+            OnBalanceChanged(new AccountEventArgs($"Transaction to {AccountTo.Account} " +
                 $"({userAccountTo!.FirstName} {userAccountTo.LastName})\n" +
                 $"Account balance - {AccountTo.Balance} {AccountTo.Currency}\n" +
                 $"Credited to account {AccountTo.Account}: {valueTo} {AccountTo.Currency}\n" +
                 $"Balance {valueTo + AccountTo.Balance} {AccountTo.Currency}", valueTo, AccountTo.Account));
-
+         
             AccountFrom.Balance -= value;
             AccountTo.Balance += valueTo;
 
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        protected virtual void OnBalanceChanged(AccountEventArgs e)
+        {
+            /*EventHandler<AccountEventArgs>? temp = Volatile.Read(ref Notification);
+
+             if (temp != null) temp(this, e);
+ */
+            Notification?.Invoke(this, e);
         }
 
     }

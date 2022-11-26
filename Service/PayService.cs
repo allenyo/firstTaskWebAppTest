@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain;
+using Domain.Interfaces;
 using Domain.Models;
 
 namespace Service
@@ -9,7 +10,9 @@ namespace Service
 
         public PayService(IAccountService accountService)
         {
-            this.accountService = accountService;
+            this.accountService = accountService;     
+
+            accountService.Notification += Notify;
 
         }
 
@@ -24,17 +27,41 @@ namespace Service
             if (AccountFrom.Balance<payTo.Value)
                 return false;
 
-            accountService.Notification += Notify;
-
             await accountService.PayToAccount(payTo.AccountFrom, payTo.AccountTo, payTo.Value);
+
+            var thread1 = new Thread(RemoveEvent);
+   /*         var thread2 = new Thread(new ParameterizedThreadStart(Pay));*/
+
+            thread1.Start();
+    /*        thread2.Start(payTo);*/
+          
+
+
+       
 
             return true;
         }
 
-        void Notify(IAccountService sender, AccountEventArgs e)
+        void Notify(object? sender, AccountEventArgs e)
         {
             Console.WriteLine(e.Message);
         }  
 
+
+         void RemoveEvent()
+        {
+            accountService.Notification -= Notify;
+
+        }
+
+     /*  async void Pay(object? PayTo)
+        {
+            if (PayTo != null)
+            {
+                if (PayTo is PayToAccountModel payTo)
+                    await accountService.PayToAccount(payTo.AccountFrom, payTo.AccountTo, payTo.Value);
+            }  
+           
+        }*/
     }
 }

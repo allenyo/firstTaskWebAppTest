@@ -4,7 +4,7 @@ using Domain.Models;
 
 namespace Service
 {
-    public class PayService : IPayService
+    public class PayService : IPayService, IDisposable
     {
         private readonly IAccountService accountService;
 
@@ -14,6 +14,11 @@ namespace Service
 
             accountService.Notification += Notify;
 
+        }
+
+        public void Dispose()
+        {
+           
         }
 
         public async Task<bool> PayToAccount(PayToAccountModel payTo)
@@ -27,41 +32,16 @@ namespace Service
             if (AccountFrom.Balance<payTo.Value)
                 return false;
 
-            await accountService.PayToAccount(payTo.AccountFrom, payTo.AccountTo, payTo.Value);
-
-            var thread1 = new Thread(RemoveEvent);
-   /*         var thread2 = new Thread(new ParameterizedThreadStart(Pay));*/
-
-            thread1.Start();
-    /*        thread2.Start(payTo);*/
-          
-
-
-       
+          await accountService.PayToAccount(payTo.AccountFrom, payTo.AccountTo, payTo.Value);
 
             return true;
         }
 
         void Notify(object? sender, AccountEventArgs e)
         {
+          
             Console.WriteLine(e.Message);
         }  
 
-
-         void RemoveEvent()
-        {
-            accountService.Notification -= Notify;
-
-        }
-
-     /*  async void Pay(object? PayTo)
-        {
-            if (PayTo != null)
-            {
-                if (PayTo is PayToAccountModel payTo)
-                    await accountService.PayToAccount(payTo.AccountFrom, payTo.AccountTo, payTo.Value);
-            }  
-           
-        }*/
     }
 }

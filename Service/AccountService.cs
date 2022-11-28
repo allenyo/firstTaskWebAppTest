@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Service
 {
-    public class AccountService : IAccountService
+    public class AccountService : IAccountService, IDisposable
     {
         private readonly RepositoryDBContext _dbContext;
         private readonly IUserService userService;
@@ -19,6 +19,7 @@ namespace Service
             _dbContext = repositoryDBContext;
             this.userService = userService;
             this.exchangeService = exchangeService;
+
         }
 
         public async Task<object?> GetAll()
@@ -116,6 +117,7 @@ namespace Service
 
         protected virtual void OnBalanceChanged(AccountEventArgs e)
         {
+            
             /*EventHandler<AccountEventArgs>? temp = Volatile.Read(ref Notification);
 
              if (temp != null) temp(this, e);
@@ -123,5 +125,9 @@ namespace Service
             Notification?.Invoke(this, e);
         }
 
+        public void Dispose()
+        {
+       
+        }
     }
 }

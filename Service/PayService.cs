@@ -1,5 +1,4 @@
 ﻿using Domain;
-using Domain.Interfaces;
 using Domain.Models;
 
 namespace Service

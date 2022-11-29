@@ -1,6 +1,5 @@
 ﻿using Data;
 using Domain;
-using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

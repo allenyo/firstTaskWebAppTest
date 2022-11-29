@@ -1,4 +1,3 @@
-using api1Domain.Interfaces;
 using api1Domain.Validation;
 using api1Service;
 using FluentValidation;

@@ -1,5 +1,4 @@
 using Data;
-using Domain.Interfaces;
 using Service;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;

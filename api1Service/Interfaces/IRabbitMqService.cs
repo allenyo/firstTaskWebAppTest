@@ -1,4 +1,4 @@
-﻿namespace api1Domain.Interfaces
+﻿namespace api1Service
 {
     public interface IRabbitMqService
     {

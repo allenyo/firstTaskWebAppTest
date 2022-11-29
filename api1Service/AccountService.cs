@@ -1,5 +1,4 @@
-﻿using api1Domain.Interfaces;
-using api1Domain.Models;
+﻿using api1Domain.Models;
 
 namespace api1Service
 {

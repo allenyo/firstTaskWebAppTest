@@ -1,6 +1,6 @@
 ﻿using api1Domain.Models;
 
-namespace api1Domain.Interfaces
+namespace api1Service
 {
     public interface IModelConverter
     {

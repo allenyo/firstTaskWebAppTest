@@ -1,5 +1,5 @@
-﻿using api1Domain.Interfaces;
-using api1Domain.Models;
+﻿using api1Domain.Models;
+using api1Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp1.Controllers

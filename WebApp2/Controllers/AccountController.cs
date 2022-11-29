@@ -1,6 +1,6 @@
 ﻿using Data;
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Service;
 
 namespace WebApi2.Controllers
 {

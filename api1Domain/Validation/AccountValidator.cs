@@ -18,7 +18,7 @@ namespace api1Domain.Validation
                     context.AddFailure("Invalid account.");
                 }
 
-                if (!int.TryParse(Account, out int value))
+                if (!long.TryParse(Account, out long value))
                 {
                     context.AddFailure("Invalid account.");
                 }

@@ -1,7 +1,6 @@
-﻿using Domain.Interfaces;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Service;
 
 namespace WebApp2.Controllers
 {

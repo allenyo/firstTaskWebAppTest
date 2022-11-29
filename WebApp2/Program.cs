@@ -32,7 +32,7 @@ builder.Host.ConfigureLogging(conf =>
 
 
 builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(Usercon));
-builder.Services.AddDbContext<carsContext>(opt=>opt.UseSqlite(CarCon));
+builder.Services.AddDbContext<CarsContext>(opt=>opt.UseSqlite(CarCon));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPayService, PayService>();

@@ -7,9 +7,9 @@ namespace Service
 {
     public class CarService : ICarService
     {
-        private readonly carsContext _carsContext;
+        private readonly CarsContext _carsContext;
 
-        public CarService(carsContext carsContext)
+        public CarService(CarsContext carsContext)
         {
             _carsContext = carsContext;
         }

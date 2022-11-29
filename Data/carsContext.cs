@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
-    public partial class carsContext : DbContext
+    public partial class CarsContext : DbContext
     {
-        public carsContext()
+        public CarsContext()
         {
         }
 
-        public carsContext(DbContextOptions<carsContext> options)
+        public CarsContext(DbContextOptions<CarsContext> options)
             : base(options)
         {
         }

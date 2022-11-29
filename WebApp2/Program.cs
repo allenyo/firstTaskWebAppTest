@@ -12,7 +12,8 @@ ConfBuilder.SetBasePath(Directory.GetCurrentDirectory());
 ConfBuilder.AddJsonFile("appsettings.json");
 var config = ConfBuilder.Build();
 
-string con = config.GetConnectionString("DefaultConnection");
+string Usercon = config.GetConnectionString("UserConnection");
+string CarCon = config.GetConnectionString("CarConnection");
 string logPath = config.GetValue<string>("LogPath");
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,8 +31,8 @@ builder.Host.ConfigureLogging(conf =>
 
 
 
-builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(con));
-builder.Services.AddDbContext<carsContext>();
+builder.Services.AddDbContext<RepositoryDBContext>(options => options.UseSqlite(Usercon));
+builder.Services.AddDbContext<carsContext>(opt=>opt.UseSqlite(CarCon));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPayService, PayService>();

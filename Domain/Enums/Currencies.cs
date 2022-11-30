@@ -12,7 +12,7 @@ namespace Domain.Enums
         [Description("American dollar")]
         USD = 1,
         [EnumMember(Value = "EUR")]
-        [Description("European Euro ")]
+        [Description("European Euro")]
         EUR = 2,
         [EnumMember(Value = "RUB")]
         [Description("Russian ruble")]

@@ -4,6 +4,6 @@ namespace Service
 {
     public interface IExchangeService
     {
-        Task<string> Exchange(ExchangeRequestModel requestModel);
+        string Exchange(ExchangeRequestModel requestModel);
     }
 }

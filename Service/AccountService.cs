@@ -85,7 +85,7 @@ namespace Service
                     CurrencyeOut = AccountTo.Currency,
                     CurrencyIn = AccountFrom.Currency
                 };
-                var ValueTo = await exchangeService.Exchange(ExchangeRequest);
+                var ValueTo = exchangeService.Exchange(ExchangeRequest);
 
                 valueTo = decimal.Parse(ValueTo.Split(" ")[0]);
 

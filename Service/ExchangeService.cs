@@ -6,7 +6,7 @@ namespace Service
 {
     public class ExchangeService : IExchangeService
     {
-        public async Task<string> Exchange(ExchangeRequestModel requestModel)
+        public string Exchange(ExchangeRequestModel requestModel)
         {
             var currencyOut = requestModel.CurrencyeOut;
             var currencyIn = requestModel.CurrencyIn;
@@ -52,7 +52,7 @@ namespace Service
                                 if (decimal.TryParse(ExchangeRatesValues.RUB.Split(" ")[0], out decimal v))
                                 {
                                     if (decimal.TryParse(ExchangeRatesValues.USD.Split(" ")[0], out decimal vr))
-                                        return ((value * v) / vr).ToString() + " USD";
+                                        return (value * v / vr).ToString() + " USD";
 
                                 }                                   
                             } break;
@@ -61,7 +61,7 @@ namespace Service
                                 if (decimal.TryParse(ExchangeRatesValues.EUR.Split(" ")[0], out decimal v))
                                 {
                                     if (decimal.TryParse(ExchangeRatesValues.USD.Split(" ")[0], out decimal ve))
-                                        return ((value * v) / ve).ToString() + " EUR";
+                                        return (value * v / ve).ToString() + " EUR";
                                 }
                             } break;
                         default: throw new ArgumentException("wrong currency");
@@ -83,7 +83,7 @@ namespace Service
                                     if (decimal.TryParse(ExchangeRatesValues.USD.Split(" ")[0], out decimal v))
                                     {
                                         if (decimal.TryParse(ExchangeRatesValues.RUB.Split(" ")[0], out decimal vr))
-                                            return ((value / v) * vr).ToString() + " RUB";
+                                            return (value * v / vr).ToString() + " RUB";
                                     }
                                 }break;
                             case Currencies.EUR:
@@ -91,7 +91,7 @@ namespace Service
                                     if (decimal.TryParse(ExchangeRatesValues.EUR.Split(" ")[0], out decimal v))
                                     {
                                         if (decimal.TryParse(ExchangeRatesValues.RUB.Split(" ")[0], out decimal vr))
-                                            return ((value / v) * vr).ToString() + " RUB";
+                                            return (value * v / vr).ToString() + " RUB";
                                     }break;
                                 }
                             default: throw new ArgumentException("wrong currency");
@@ -113,7 +113,7 @@ namespace Service
                                         if (decimal.TryParse(ExchangeRatesValues.USD.Split(" ")[0], out decimal v))
                                         {
                                             if (decimal.TryParse(ExchangeRatesValues.EUR.Split(" ")[0], out decimal vu))
-                                                return (value / v * vu).ToString() + " EUR";
+                                                return (value * v / vu).ToString() + " EUR";
                                         }
                                     }break;
                                 case Currencies.RUB:

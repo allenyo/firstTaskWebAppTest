@@ -17,9 +17,9 @@ namespace WebApi2.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Exchange(ExchangeRequestModel requestModel)
+        public IActionResult Exchange(ExchangeRequestModel requestModel)
         {
-            var res = await exchangeService.Exchange(requestModel);
+            var res = exchangeService.Exchange(requestModel);
             return Ok(res);
         }
     }

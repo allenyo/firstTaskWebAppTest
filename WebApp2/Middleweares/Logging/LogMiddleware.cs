@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
 namespace WebApi2.Middleweres.Logging
 {
@@ -15,13 +16,16 @@ namespace WebApi2.Middleweres.Logging
 
         public async Task InvokeAsync(HttpContext context)
         {
+            var stopWatch = Stopwatch.StartNew();
+
           var thread1 = new Thread(new ParameterizedThreadStart(LogReq));        
 
             thread1.Start(context);  
             
             await next(context);
 
-            LogRes(context);
+            stopWatch.Stop();
+            LogRes(context, stopWatch.ElapsedMilliseconds);
 
         }
 
@@ -56,18 +60,18 @@ namespace WebApi2.Middleweres.Logging
             if (obj is HttpContext context)
                 app.Logger.LogInformation($"Request Path: {context.Request.Path}, Date: " +
                     $"{DateTime.Now.Date.ToShortDateString()} " +
-                    $"Time:{DateTime.Now.ToLongTimeString()} {DateTime.Now.Millisecond}\n" +
+                    $"Time:{DateTime.Now.ToLongTimeString()}\n" +
                     $"Request Protocol: {context.Request.Protocol}, Request Method: {context.Request.Method}\n" +
                     $"Request Headers: {GetHeaders(context.Request)}\n----------------------------------------");
 
         }
 
-        void LogRes(object? obj) 
+        void LogRes(object? obj, long resTime) 
         {
             if (obj is HttpContext context)
             app.Logger.LogInformation($"Respone Status Code: {context.Response.StatusCode}, Date: " +
-                $"{DateTime.Now.Date.ToShortDateString()} Time:{DateTime.Now.ToLongTimeString()} " +
-                $"{DateTime.Now.Millisecond}\n" +
+                $"{DateTime.Now.Date.ToShortDateString()}\n" +
+                $"Response Time:{resTime} miliseconds\n" +
                 $"Response Headers: {GetHeaders(context.Response)}\n");
         } 
 

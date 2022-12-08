@@ -16,7 +16,7 @@ namespace WebApi1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PayToAccountModel(PayToAccountModel model)
+        public async Task<IActionResult> PayToAccount(PayToAccountModel model)
         {
             var res = await _payService.PayToAccount(model);
             return Ok(res);

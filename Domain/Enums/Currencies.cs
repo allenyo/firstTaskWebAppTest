@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace Domain.Enums
 {
+    [JsonConverter(typeof(StringEnumConverter), typeof(CamelCaseNamingStrategy))]
     public enum Currencies 
     {
         [EnumMember(Value = "AMD")]

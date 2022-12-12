@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections;
+﻿using System.Collections;
 
 namespace api1Service
 {
@@ -165,70 +164,117 @@ namespace api1Service
             if (valueType == null)
                 throw new ArgumentException("Wrong type", nameof(Value));
 
-            return byte.Parse(Value.ToString());
+            if (valueType.IsClass || valueType.IsValueType)
+            {
+                var value = Value.ToString();
+
+                if (value == null)
+                    throw new ArgumentException("Wrong value", nameof(Value));
+
+                if (valueType == typeof(bool))
+                {
+                    return Value switch
+                    {
+                        true => 1,
+                        false => 0,
+                        _=> throw new InvalidCastException()
+                    };
+
+                }
+
+                if (value.Contains('.') || value.Contains(','))
+                {
+                    var num = value.Split(new char[] { '.', ',' });
+                    var num1 = long.Parse(num[0]);
+                    var num2 = long.Parse(num[1]);
+
+                    if (num2 > 5)
+                    {
+                        value = (num1 + 1).ToString();
+                    }
+                    else
+                    {
+                        value = num1.ToString();
+                    }
+                }
+
+                if (byte.TryParse(value, out byte _value))
+                {
+                    return _value;
+                }
+                else
+                {
+                    throw new InvalidCastException();
+                }
+            } else
+            {
+                return 0;
+
+            }         
+
         }
 
-        public static char ToChar<T>(T type)
+        public static char ToChar<T>(this T Value)
         {
             throw new NotImplementedException();
         }
 
-        public static DateTime ToDateTime<T>(T type)
+        public static DateTime ToDateTime<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static decimal ToDecimal<T>(T type)
+        public static decimal ToDecimal<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static double ToDouble<T>(T type)
+        public static double ToDouble<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static short ToInt16<T>(T type)
+        public static short ToInt16<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static int ToInt32<T>(T type)
+        public static int ToInt32<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static long ToInt64<T>(T type)
+        public static long ToInt64<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static sbyte ToSByte<T>(T type)
+        public static sbyte ToSByte<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static float ToSingle<T>(T type)
+        public static float ToSingle<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static string ToString<T>(T type)
+        public static string ToString<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static ushort ToUInt16<T>(T type)
+        public static ushort ToUInt16<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static uint ToUInt32<T>(T type)
+        public static uint ToUInt32<T>(this T type)
         {
             throw new NotImplementedException();
         }
 
-        public static ulong ToUInt64<T>(T type)
+        public static ulong ToUInt64<T>(this T type)
         {
             throw new NotImplementedException();
         }

@@ -41,7 +41,7 @@ builder.Services.AddHttpClient("yoclient");
 builder.Services.AddScoped<ICarService, CarService>();  // experiment
 
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 
 var app = builder.Build();

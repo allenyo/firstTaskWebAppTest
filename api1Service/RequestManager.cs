@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using api1Domain.Models;
+using System.Net.Http.Json;
 
 namespace api1Service
 {
@@ -23,40 +24,49 @@ namespace api1Service
         public bool Success { get; set; }
 
 
-       internal async Task Request(string url, HttpMethod method, object? data = null)
+        internal async Task Request(string url, HttpMethod method, object? data = null)
         {
-            var _httpClient = httpClientFactory.CreateClient("yoclient");
+            try
+            {
+                var _httpClient = httpClientFactory.CreateClient("yoclient");
 
-            if (data == null && method == HttpMethod.Get)
-            {
-                _response = await _httpClient.GetAsync(url);
-              
-            }
-            else
-            {
-                if (data != null && method == HttpMethod.Post)
+                if (data == null && method == HttpMethod.Get)
                 {
-                    _response = await _httpClient.PostAsJsonAsync(url, data);
+                    _response = await _httpClient.GetAsync(url);
 
                 }
                 else
                 {
-                    if (method == HttpMethod.Delete)
+                    if (data != null && method == HttpMethod.Post)
                     {
-                        _response = await _httpClient.DeleteAsync(url);
-                    } else
-                    {
-                        _response = await _httpClient.PutAsJsonAsync(url, data);
-                    }                
+                        _response = await _httpClient.PostAsJsonAsync(url, data);
 
-                }   
+                    }
+                    else
+                    {
+                        if (method == HttpMethod.Delete)
+                        {
+                            _response = await _httpClient.DeleteAsync(url);
+                        }
+                        else
+                        {
+                            _response = await _httpClient.PutAsJsonAsync(url, data);
+                        }
+
+                    }
+                }
+
+                Status = _response.StatusCode.ToString();
+
+                Success = _response.IsSuccessStatusCode;
+
+                Data = await _response.Content.ReadAsStringAsync();
             }
+            catch (Exception ex)
+            {
+                Data = new ErrorModel { Message = ex.Message, Error = "RequestError", Code = 64 };
 
-            Status = _response.StatusCode.ToString();
-
-            Success = _response.IsSuccessStatusCode;
-
-            Data = await _response.Content.ReadAsStringAsync();
+            }
         }
     }
 }

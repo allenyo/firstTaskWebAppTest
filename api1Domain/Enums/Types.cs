@@ -1,12 +1,16 @@
-﻿using System.Runtime.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+using System.Runtime.Serialization;
+
 
 namespace api1Domain.Enums
 {
+    [JsonConverter(typeof(StringEnumConverter), typeof(CamelCaseNamingStrategy))]
     public enum Types
     {
-        None,
         [EnumMember(Value = "string")]
-        String,
+        String = 0,
         [EnumMember(Value = "object")]
         Object,
         [EnumMember(Value = "arraylist")]
@@ -40,7 +44,9 @@ namespace api1Domain.Enums
         [EnumMember(Value = "dictionary")]
         Dictionary,
         [EnumMember(Value = "list")]
-        List
+        List,
+        [EnumMember(Value ="date")]
+        DateTime,
     }
 
 }

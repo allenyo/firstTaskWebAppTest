@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Service
 {
-    public class PayService : IPayService, IDisposable
+    public class PayService : IPayService
     {
         private readonly IAccountService accountService;
 
@@ -13,11 +13,6 @@ namespace Service
 
             accountService.Notification += Notify;
 
-        }
-
-        public void Dispose()
-        {
-           
         }
 
         public async Task<bool> PayToAccount(PayToAccountModel payTo)

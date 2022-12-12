@@ -11,15 +11,17 @@ builder.Services.AddScoped<RequestManager>();
 builder.Services.AddScoped<IPayService, PayService>();
 builder.Services.AddScoped<IExchangeService, ExchangeService>();
 
-builder.Services.AddScoped<ICarService, CarService>(); // eex
+builder.Services.AddScoped<ICarService, CarService>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
 builder.Services.AddScoped<IAccountService, AccountService>(); 
 builder.Services.AddScoped<HttpResponseMessage>();
 builder.Services.AddHttpClient();
 builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 builder.Host.ConfigureLogging(conf =>
 {
@@ -41,7 +43,6 @@ app.UseStatusCodePages(async statusCodeContext =>
 
 });
 app.UseSwagger();
-
 
 app.UseSwaggerUI(c =>
 {

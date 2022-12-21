@@ -39,15 +39,7 @@ namespace api1Service
 
         public static bool ToBoolean<T>(this T Value)
         {
-            if (Value == null)
-                throw new ArgumentNullException(nameof(Value));
-
-            var typeName = typeof(T).Name.ToLower();
-
-            _ = _types.TryGetValue(typeName, out var valueType);
-
-            if (valueType == null)
-                throw new ArgumentException("Wrong type", nameof(Value));
+            var valueType = GetValueType(Value);
 
             if (valueType.IsValueType)
             {
@@ -93,7 +85,7 @@ namespace api1Service
                 {
                     if (valueType == typeof(string))
                     {
-                        return (Value.ToString()?.ToLower()) switch
+                        return (Value!.ToString()?.ToLower()) switch
                         {
                             null => false,
                             "true" => true,
@@ -154,19 +146,11 @@ namespace api1Service
 
         public static byte ToByte<T>(this T Value)
         {
-            if (Value == null)
-                throw new ArgumentNullException(nameof(Value));
-
-            var typeName = typeof(T).Name.ToLower();
-
-            _ = _types.TryGetValue(typeName, out var valueType);
-
-            if (valueType == null)
-                throw new ArgumentException("Wrong type", nameof(Value));
+            var valueType = GetValueType(Value);
 
             if (valueType.IsClass || valueType.IsValueType)
             {
-                var value = Value.ToString();
+                var value = Value!.ToString();
 
                 if (value == null)
                     throw new ArgumentException("Wrong value", nameof(Value));
@@ -208,7 +192,7 @@ namespace api1Service
                 }
             } else
             {
-                return 0;
+                throw new InvalidCastException(valueType.Name);
 
             }         
 
@@ -216,67 +200,106 @@ namespace api1Service
 
         public static char ToChar<T>(this T Value)
         {
-            throw new NotImplementedException();
+            var valueType = GetValueType(Value);
+
+            if (valueType == typeof(string))
+            {
+                if (Value is string s)
+                {
+                    if (s.Length == 1)
+                        return s[0];
+                }
+
+            } else
+            {
+                if (valueType.IsValueType)
+                {
+                    var _value = Value!.ToString();
+
+                    if (sbyte.TryParse(Value!.ToString(), out sbyte v))
+
+                      if (v >= 0 && v < 10)
+                       {
+                            return _value![0];
+                       }          
+
+                }
+            }
+
+            throw new InvalidCastException(valueType.Name);
+            
         }
 
-        public static DateTime ToDateTime<T>(this T type)
+        public static DateTime ToDateTime<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToDateTime(Value);
         }
 
-        public static decimal ToDecimal<T>(this T type)
+        public static decimal ToDecimal<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _ = GetValueType(Value);
+            return Convert.ToDecimal(Value);
         }
 
-        public static double ToDouble<T>(this T type)
+        public static double ToDouble<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToDouble(Value);
         }
 
-        public static short ToInt16<T>(this T type)
+        public static short ToInt16<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _=GetValueType(Value);
+           return Convert.ToInt16(Value);
         }
 
-        public static int ToInt32<T>(this T type)
+        public static int ToInt32<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _=GetValueType(Value);
+            return Convert.ToInt32(Value);
         }
 
-        public static long ToInt64<T>(this T type)
+        public static long ToInt64<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToInt64(Value);
         }
 
-        public static sbyte ToSByte<T>(this T type)
+        public static sbyte ToSByte<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+           return Convert.ToSByte(Value);
         }
 
-        public static float ToSingle<T>(this T type)
+        public static float ToSingle<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+           return Convert.ToSingle(Value);
         }
 
-        public static string ToString<T>(this T type)
+        public static string ToString<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToString(Value!)!;
         }
 
-        public static ushort ToUInt16<T>(this T type)
+        public static ushort ToUInt16<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToUInt16(Value);
         }
 
-        public static uint ToUInt32<T>(this T type)
+        public static uint ToUInt32<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToUInt32(Value);
         }
 
-        public static ulong ToUInt64<T>(this T type)
+        public static ulong ToUInt64<T>(this T Value)
         {
-            throw new NotImplementedException();
+            _= GetValueType(Value);
+            return Convert.ToUInt64(Value);
         }
 
         private static bool ValueTypeToBool<T>(T value, Type type)
@@ -427,6 +450,21 @@ namespace api1Service
             }
 
             
+        }
+
+        private static Type GetValueType<T>(T Value)
+        {
+            if (Value == null)
+                throw new ArgumentNullException(nameof(Value));
+
+            var typeName = typeof(T).Name.ToLower();
+
+            _ = _types.TryGetValue(typeName, out var valueType);
+
+            if (valueType == null)
+                 throw new ArgumentException("Wrong type", nameof(Value));
+
+            return valueType;
         }
     }
 }

@@ -19,7 +19,6 @@ namespace WebApi1.Controllers
                 var response = ConvertTo(value, requestModel.InType, requestModel.OutType);
 
                 return response;
- 
         }
 
         private IActionResult ConvertTo<T>(T Value, Types type, Types OutType)
@@ -143,6 +142,7 @@ namespace WebApi1.Controllers
             Console.WriteLine(response);
             return response;      
         }
- 
+
     }
+
 }

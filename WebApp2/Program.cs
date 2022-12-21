@@ -58,14 +58,9 @@ app.UseStatusCodePages(async statusCodeContext =>
 
 });
 
+app.MapControllers();
+
 app.UseRouting();
-
-
-app.UseEndpoints( endpoints =>
-{
-    endpoints.MapControllers();
-  
-});
 
 
 app.MapGet("/", async context =>

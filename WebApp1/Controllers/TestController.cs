@@ -115,9 +115,9 @@ namespace WebApi1.Controllers
             if (value == null)
               return  new ErrorModel { Code = 98, Error = "ValueNull", Message = "Value is null." }.ToString();
 
-           var response = $"Converted {value.GetType().Name} to {OutType}\n" +
-           $"Value - {value}\n" +
-           $"Result - ";
+            var response = $"Converted {value.GetType().Name} to {OutType}\n" +
+                           $"Value - {value}\n" +
+                           $"Result - ";
 
             switch (OutType)
             {
@@ -136,6 +136,10 @@ namespace WebApi1.Controllers
                 case Types.DateTime: response += value.ToDateTime(); break;
                 case Types.Sbyte: response += value.ToSByte(); break;
                 case Types.Short: response += value.ToInt16(); break;
+                case Types.Object:
+                case Types.ArrayList:
+                case Types.Dictionary:
+                case Types.List:
                 default: return new ErrorModel { Code = 99, Error = "IncorrectOutType", Message = "Incorrect out type" }.ToString(); break;
             }
 

@@ -2,6 +2,7 @@
 using api1Domain.Models;
 using api1Service;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using System.Collections;
 
 namespace WebApi1.Controllers
@@ -13,17 +14,17 @@ namespace WebApi1.Controllers
         [HttpPost]
         public IActionResult ConverterTest(ConvertRequestModel requestModel)
         {
-                var value = requestModel.Value.ToString();
-                value ??= string.Empty;
+            var value = requestModel.Value.ToString();
+            value ??= string.Empty;
 
-                var response = ConvertTo(value, requestModel.InType, requestModel.OutType);
+            var response = ConvertTo(value, requestModel.InType, requestModel.OutType);
 
-                return response;
+            return response;
         }
 
         private IActionResult ConvertTo<T>(T Value, Types type, Types OutType)
         {
-           
+
             if (Value == null)
                 return Ok(new ErrorModel { Code = 98, Error = "ValueNull", Message = "Value is null." });
 
@@ -101,19 +102,20 @@ namespace WebApi1.Controllers
                     default:
                         var error = new ErrorModel { Code = 99, Error = "IncorrectInType", Message = "Incorrect in type" };
                         return Ok(error.ToString());
-                }     
-            } catch(Exception ex)
+                }
+            }
+            catch (Exception ex)
             {
-                var error = new ErrorModel { Code = 95, Error = ex.Source + "Exception", Message = ex.ToString()};
+                var error = new ErrorModel { Code = 95, Error = ex.Source + "Exception", Message = ex.ToString() };
                 return Ok(error.ToString());
 
             }
         }
-      
+
         private static string Convert<T>(T value, Types OutType)
         {
             if (value == null)
-              return  new ErrorModel { Code = 98, Error = "ValueNull", Message = "Value is null." }.ToString();
+                return new ErrorModel { Code = 98, Error = "ValueNull", Message = "Value is null." }.ToString();
 
             var response = $"Converted {value.GetType().Name} to {OutType}\n" +
                            $"Value - {value}\n" +
@@ -144,7 +146,16 @@ namespace WebApi1.Controllers
             }
 
             Console.WriteLine(response);
-            return response;      
+            return response;
+        }
+
+
+        [HttpPost]
+        public IActionResult Test(AsyncRequestData<CheckClientResponseModel> asyncRequest)
+        {
+            var a = asyncRequest;
+
+            return Ok(true);
         }
 
     }

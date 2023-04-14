@@ -16,32 +16,30 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
-builder.Services.AddScoped<IAccountService, AccountService>(); 
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<HttpResponseMessage>();
 builder.Services.AddHttpClient();
 builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddSwaggerGenNewtonsoftSupport();
 
-builder.Host.ConfigureLogging(conf =>
-{
-    conf.AddFilter("System", LogLevel.Warning);
-    conf.AddFilter("LoggingConsoleApp.Program", LogLevel.Debug);
-    conf.AddFilter("Microsoft", LogLevel.Warning);
-
-});
+builder.Logging.AddFilter("System", LogLevel.Warning).AddFilter("LoggingConsoleApp.Program", LogLevel.Debug).AddFilter("Microsoft", LogLevel.Warning);
 
 var app = builder.Build();
+
 
 app.UseStatusCodePages(async statusCodeContext =>
 {
     var response = statusCodeContext.HttpContext.Response;
     var path = statusCodeContext.HttpContext.Request.Path;
 
-   await response.WriteAsync($"Error - {path}. Status Code - {response.StatusCode}");
+    await response.WriteAsync($"Error - {path}. Status Code - {response.StatusCode}");
 
 
 });
+
+
+
 app.UseSwagger();
 
 app.UseSwaggerUI(c =>
@@ -50,16 +48,13 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
     c.DisplayRequestDuration();
     c.DisplayOperationId();
-    
+
 });
 
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
 
-});
+app.MapControllers();
 
 app.Run();
 
